@@ -27,7 +27,7 @@ def resolve(project, profile, pack, check):
         for token, root in (('{pack}', pack.root), ('{project}', project.root)):
             if arg == token or arg.startswith(token + '/'):
                 suffix = arg[len(token):].lstrip('/')
-                arg = str(relative_path(root, suffix or '.', directory=not suffix))
+                arg = str(relative_path(root, suffix or '.', directory=None))
                 break
         expanded.append(arg)
     return expanded, cwd, timeout
@@ -79,8 +79,9 @@ def run(project, execute=False, selected=()):
                         os.killpg(process.pid, signal.SIGKILL)
                         process.wait()
                         result.update(status='execution-error', reason='Timeout exceeded')
-                except OSError as exc:
-                    result.update(status='execution-error', reason=str(exc))
+                except (OSError, ValueError) as exc:
+                    reason = str(exc) if isinstance(exc, OSError) else 'Invalid process arguments'
+                    result.update(status='execution-error', reason=reason)
             result['duration_seconds'] = time.monotonic() - start
         results.append(result)
     statuses = {r['id']: r['status'] for r in results}

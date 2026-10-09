@@ -81,8 +81,14 @@ def relative_path(root, value, directory=False, must_exist=True):
     candidate = root / path
     if not candidate.resolve().is_relative_to(root.resolve()):
         raise Refusal("Resolved resource path escapes its owner")
-    if must_exist and not (candidate.is_dir() if directory else candidate.is_file()):
-        raise Refusal(f"Referenced {'directory' if directory else 'file'} missing: {value}")
+    if must_exist:
+        if directory is None:
+            valid, kind = candidate.is_file() or candidate.is_dir(), "path"
+        else:
+            valid = candidate.is_dir() if directory else candidate.is_file()
+            kind = "directory" if directory else "file"
+        if not valid:
+            raise Refusal(f"Referenced {kind} missing: {value}")
     return candidate
 
 
@@ -144,12 +150,8 @@ class Pack:
                 relative_path(self.root, check["cwd_subdir"], directory=True,
                               must_exist=check["cwd"] == "pack")
             for arg in check.get("argv", []):
-                if "{pack}" in arg:
-                    if not arg.startswith("{pack}/") or arg.count("{pack}") != 1:
-                        raise Refusal("Pack placeholder must prefix a relative resource path")
-                    relative_path(self.root, arg[len("{pack}/"):])
-                if "{" in arg.replace("{pack}", "").replace("{project}", ""):
-                    raise Refusal("Unsupported command placeholder")
+                if arg == "{pack}" or arg.startswith("{pack}/"):
+                    relative_path(self.root, arg[len("{pack}"):].lstrip("/") or ".", directory=None)
         for key in ("standards", "workflows", "templates", "tools"):
             for value in self.manifest.get(key, []):
                 relative_path(self.root, value)
@@ -180,10 +182,12 @@ class Pack:
         return {"id": self.id, "version": self.version, "digest": self.digest}
 
 
-def discover(repo=REPO, roots=()):
+def discover(repo=REPO, roots=(), selected=None):
     locations = [Path(repo) / "packs"] + [Path(p).resolve() for p in roots]
     found = {}
     seen = set()
+    declared = set()
+    pending = []
     for location in locations:
         if not location.exists():
             continue
@@ -192,10 +196,29 @@ def discover(repo=REPO, roots=()):
             if path.resolve() in seen:
                 continue
             seen.add(path.resolve())
-            pack = Pack(path)
-            if pack.id in found:
-                raise Refusal("Duplicate pack identifier across discovery roots: " + pack.id)
-            found[pack.id] = pack
+            # Index readable identifiers before validating payloads so an
+            # invalid duplicate cannot shadow a selected, otherwise valid pack.
+            try:
+                raw = regular_bytes(path.resolve() / "pack.json")
+                if raw is None:
+                    raise Refusal("Pack manifest missing")
+                identifier = decode_json(raw, "pack.json").get("id")
+            except (Refusal, OSError):
+                if selected is None:
+                    raise
+                continue
+            if isinstance(identifier, str):
+                if identifier in declared:
+                    raise Refusal("Duplicate pack identifier across discovery roots: " + identifier)
+                declared.add(identifier)
+            if selected is not None and identifier != selected:
+                continue
+            pending.append(path)
+    for path in pending:
+        pack = Pack(path)
+        if pack.id in found:
+            raise Refusal("Duplicate pack identifier across discovery roots: " + pack.id)
+        found[pack.id] = pack
     return found
 
 

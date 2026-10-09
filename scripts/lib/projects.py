@@ -161,9 +161,10 @@ class Project:
 
     def selected(self, selection, roots):
         path = Path(selection)
-        choices = discover(self.repo, [*roots, *([path] if path.is_dir() else [])])
-        if path.is_dir():
-            pack = Pack(path)
+        pack = Pack(path) if path.is_dir() else None
+        choices = discover(self.repo, [*roots, *([path] if pack else [])],
+                           selected=pack.id if pack else selection)
+        if pack:
             if choices.get(pack.id).root != pack.root:
                 raise Refusal("Pack source conflicts with available identifier")
             return pack
@@ -263,7 +264,12 @@ class Project:
                 files.append(self.file_operation(rel, raw, value))
         before_profile = regular_bytes(self.profile_path)
         after_profile = before_profile if desired == original and before_profile is not None else json_bytes(desired)
-        newstate["profile_digest"] = digest(after_profile)
+        # Pack lifecycle approval covers only the pack changes. Never bless
+        # unrelated profile drift, including on a subsequent no-op mutation.
+        approved = (before_profile is not None and old["profile_digest"] == digest(before_profile))
+        fresh = before_profile is None and not old["packs"] and old["profile_digest"] is None
+        if action == "sync" or approved or fresh:
+            newstate["profile_digest"] = digest(after_profile)
         if before_profile != after_profile:
             files.insert(0, self.file_operation(".harness/project.json", before_profile, after_profile))
         before_state = regular_bytes(self.state_path)
@@ -276,6 +282,8 @@ class Project:
             print(("REMOVE" if op["after"] is None else "WRITE") + " " + op["path"])
         if action == "deactivate" and any(c.startswith(selection + ":") for c in desired["required_checks"]):
             print("NOTE: retained required checks for this pack remain unsatisfied until explicitly revised")
+        if newstate["profile_digest"] is None:
+            print("NOTE: unapproved profile changes retained; explicit project sync required before check execution")
         print("Pack instructions approved for exposure; checks still require explicit --execute")
         if not operations and not files:
             print("NO CHANGES")

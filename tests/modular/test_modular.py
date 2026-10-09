@@ -101,6 +101,159 @@ class Modular(unittest.TestCase):
         with self.assertRaises(Refusal): run(self.p,execute=True)
         with contextlib.redirect_stdout(io.StringIO()):self.p.mutation('sync',apply=True)
         self.assertTrue(run(self.p,execute=True)['execution_ok'])
+    def test_pack_mutations_do_not_approve_unreviewed_commands(self):
+        pack=self.pack(checks=[{'id':'named','description':'Named project command',
+            'project_command':'test','cwd':'project','timeout_seconds':2}])
+        other=self.pack('other')
+        self.activate(pack);self.activate(other)
+        profile=self.p.profile()
+        profile['commands']['test']={'argv':[sys.executable,'-c','pass'],
+            'cwd':'.','timeout_seconds':2}
+        self.p.profile_path.write_bytes(json_bytes(profile))
+        with contextlib.redirect_stdout(io.StringIO()):self.p.mutation('sync',apply=True)
+        marker=self.project/'unapproved-command'
+        profile['commands']['test']['argv']=[sys.executable,'-c',
+            f'from pathlib import Path;Path({str(marker)!r}).write_text("ran")']
+        self.p.profile_path.write_bytes(json_bytes(profile))
+        for action, selection in (('activate','other'), ('deactivate','other'), ('deactivate','absent')):
+            with self.subTest(action=action,selection=selection):
+                with contextlib.redirect_stdout(io.StringIO()):
+                    self.p.mutation(action,selection,apply=True)
+                with self.assertRaises(Refusal):run(self.p,execute=True)
+                self.assertFalse(marker.exists())
+        with contextlib.redirect_stdout(io.StringIO()):self.p.mutation('sync',apply=True)
+        self.assertTrue(run(self.p,execute=True)['execution_ok'])
+        self.assertTrue(marker.exists())
+    def test_initial_activation_preserves_existing_profile_approval_boundary(self):
+        pack=self.pack(checks=[{'id':'named','description':'Named project command',
+            'project_command':'test','cwd':'project','timeout_seconds':2}])
+        profile=default_profile()
+        profile['commands']['test']={'argv':[sys.executable,'-c','pass'],
+            'cwd':'.','timeout_seconds':2}
+        self.p.profile_path.parent.mkdir()
+        self.p.profile_path.write_bytes(json_bytes(profile))
+        self.activate(pack)
+        with self.assertRaises(Refusal):run(self.p,execute=True)
+        with contextlib.redirect_stdout(io.StringIO()):self.p.mutation('sync',apply=True)
+        self.assertTrue(run(self.p,execute=True)['execution_ok'])
+    def test_clean_pack_mutations_preserve_approved_command_execution(self):
+        pack=self.pack(checks=[{'id':'named','description':'Named project command',
+            'project_command':'test','cwd':'project','timeout_seconds':2}])
+        self.activate(pack)
+        profile=self.p.profile()
+        profile['commands']['test']={'argv':[sys.executable,'-c','pass'],
+            'cwd':'.','timeout_seconds':2}
+        self.p.profile_path.write_bytes(json_bytes(profile))
+        with contextlib.redirect_stdout(io.StringIO()):self.p.mutation('sync',apply=True)
+        self.activate(self.pack('other'))
+        self.assertTrue(run(self.p,execute=True)['execution_ok'])
+        with contextlib.redirect_stdout(io.StringIO()):self.p.mutation('deactivate','other',apply=True)
+        self.assertTrue(run(self.p,execute=True)['execution_ok'])
+    def test_broken_pack_removal_preserves_unapproved_profile_changes(self):
+        pack=self.pack();other=self.pack('other')
+        self.activate(pack);self.activate(other)
+        profile=self.p.profile()
+        profile['commands']['test']={'argv':[sys.executable,'-c','pass'],
+            'cwd':'.','timeout_seconds':2}
+        self.p.profile_path.write_bytes(json_bytes(profile))
+        shutil.rmtree(other.root)
+        with contextlib.redirect_stdout(io.StringIO()):self.p.mutation('deactivate','other',apply=True)
+        self.assertNotIn('other',self.p.state()['packs'])
+        self.assertEqual(self.p.profile()['commands'],profile['commands'])
+        with self.assertRaises(Refusal):run(self.p,execute=True)
+        with contextlib.redirect_stdout(io.StringIO()):self.p.mutation('sync',apply=True)
+        self.assertTrue(run(self.p,execute=True)['execution_ok'])
+    def test_selected_pack_isolated_from_invalid_available_packs(self):
+        pack=self.pack();broken=self.pack('broken')
+        for contents in ('{}', '{', '{"id":"broken","schema_version":99}'):
+            with self.subTest(contents=contents):
+                (broken.root/'pack.json').write_text(contents)
+                with self.assertRaises(Refusal):discover(self.repo)
+                for selection in (pack.id,str(pack.root)):
+                    with contextlib.redirect_stdout(io.StringIO()):
+                        self.p.mutation('activate',selection,apply=True)
+                    self.assertEqual(self.p.inspect()['packs'][0]['id'],pack.id)
+                with contextlib.redirect_stdout(io.StringIO()):self.p.mutation('sync',apply=True)
+        with self.assertRaises(Refusal):self.p.mutation('activate','broken',apply=True)
+    def test_invalid_pack_cannot_hide_duplicate_identifier(self):
+        pack=self.pack();broken=self.pack('broken')
+        (broken.root/'pack.json').write_text('{"id":"example"}')
+        for selection in (pack.id,str(pack.root)):
+            with self.subTest(selection=selection):
+                with self.assertRaisesRegex(Refusal,'Duplicate pack identifier'):
+                    self.p.mutation('activate',selection,apply=True)
+        self.assertFalse(self.p.profile_path.exists())
+    def test_literal_braces_are_preserved_in_command_arguments(self):
+        literal='{"configuration":"{unknown}"}'
+        pack=self.pack(checks=[self.check([sys.executable,'-c',
+            'import sys;print({"count": 1});print(sys.argv[1])',literal])])
+        self.activate(pack)
+        self.assertEqual(run(self.p)['checks'][0]['argv'][-1],literal)
+        report=run(self.p,execute=True)
+        self.assertTrue(report['execution_ok'])
+        self.assertIn(literal,(self.project/report['results'][0]['stdout']).read_text())
+    def test_placeholder_arguments_accept_files_directories_and_roots(self):
+        (self.project/'src').mkdir();(self.project/'input.txt').write_text('fixture')
+        pack=self.pack(checks=[self.check([sys.executable,'-c',
+            'import pathlib,sys;print([pathlib.Path(p).is_dir() for p in sys.argv[1:]])',
+            '{project}/src','{project}/input.txt','{pack}/standards','{pack}/workflow.md','{project}','{pack}'])])
+        self.activate(pack)
+        argv=run(self.p)['checks'][0]['argv']
+        self.assertEqual(argv[-6:],[str(self.project/'src'),str(self.project/'input.txt'),
+            str(pack.root/'standards'),str(pack.root/'workflow.md'),str(self.project),str(pack.root)])
+        report=run(self.p,execute=True)
+        self.assertTrue(report['execution_ok'])
+        self.assertEqual((self.project/report['results'][0]['stdout']).read_text().strip(),
+            '[True, False, True, False, True, True]')
+    def test_placeholder_arguments_reject_missing_and_escaping_paths(self):
+        (self.project/'outside-link').symlink_to(self.root,target_is_directory=True)
+        for index,argument in enumerate(('{project}/missing','{project}/../outside',
+                '{project}/outside-link','{pack}/missing','{pack}/../outside')):
+            with self.subTest(argument=argument):
+                with self.assertRaises(Refusal):
+                    pack=self.pack('paths-'+str(index),checks=[self.check([sys.executable,'-c','pass',argument])])
+                    self.activate(pack)
+                    run(self.p)
+                # Clean any successful activation before testing the next path.
+                if 'paths-'+str(index) in self.p.state()['packs']:
+                    with contextlib.redirect_stdout(io.StringIO()):
+                        self.p.mutation('deactivate','paths-'+str(index),apply=True)
+    def test_nul_process_arguments_rejected_by_pack_and_project_validation(self):
+        with self.assertRaises(Refusal):
+            self.pack('invalid',checks=[self.check([sys.executable,'-c','pass','\x00'])])
+        # Remove the invalid available fixture; validation of the selected pack
+        # is tested separately from isolation of unrelated invalid manifests.
+        shutil.rmtree(self.repo/'packs/invalid')
+        pack=self.pack();self.activate(pack)
+        profile=self.p.profile()
+        profile['commands']['test']={'argv':[sys.executable,'-c','pass','\x00'],
+            'cwd':'.','timeout_seconds':2}
+        self.p.profile_path.write_bytes(json_bytes(profile))
+        with self.assertRaises(Refusal):self.p.profile()
+        with self.assertRaises(Refusal):run(self.p,execute=True)
+        self.assertFalse((self.p.local/'reports').exists())
+        import subprocess
+        proc=subprocess.run([str(ROOT/'scripts/harness'),'check','run',
+            '--project',str(self.project),'--execute'],capture_output=True,text=True)
+        self.assertEqual(proc.returncode,1)
+        self.assertIn('REFUSED:',proc.stderr)
+        self.assertNotIn('Traceback',proc.stderr)
+    def test_invalid_launch_arguments_report_execution_error_and_continue(self):
+        import subprocess
+        pack=self.pack(checks=[self.check([sys.executable,'-c','pass','invalid-fixture'],'invalid'),
+            self.check([sys.executable,'-c','print("next check ran")'],'valid')])
+        self.activate(pack)
+        popen=subprocess.Popen
+        def launch(argv,**kwargs):
+            if argv[-1]=='invalid-fixture':raise ValueError('Invalid process argument')
+            return popen(argv,**kwargs)
+        with patch('checks.subprocess.Popen',side_effect=launch):
+            report=run(self.p,execute=True)
+        self.assertEqual([r['status'] for r in report['results']],['execution-error','success'])
+        self.assertFalse(report['execution_ok'])
+        stored=list(self.p.local.rglob('result.json'))
+        self.assertEqual(len(stored),1)
+        self.assertEqual(json.loads(stored[0].read_text()),report)
     def test_check_outcomes_and_reports(self):
         pack=self.pack(checks=[self.check([sys.executable,'-c','print("ok")'],'success'),self.check([sys.executable,'-c','raise SystemExit(2)'],'failure'),self.check(['missing-executable-123'],'error'),self.check([sys.executable,'-c','import time;time.sleep(3)'],'timeout',timeout_seconds=1),{'id':'skip','description':'Optional missing command','project_command':'absent','cwd':'project','timeout_seconds':1}])
         self.activate(pack);report=run(self.p,execute=True)

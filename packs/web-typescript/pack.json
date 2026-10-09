@@ -1,12 +1,20 @@
 {
   "schema_version": 1,
   "id": "web-typescript",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Explicit Next.js, React, TypeScript, Supabase, PostgreSQL and Vercel conventions.",
   "skills": [
     {
       "name": "web-typescript-review",
       "path": "skills/web-typescript-review"
+    },
+    {
+      "name": "web-typescript-frontend-patterns",
+      "path": "skills/web-typescript-frontend-patterns"
+    },
+    {
+      "name": "web-typescript-ui-ux",
+      "path": "skills/web-typescript-ui-ux"
     }
   ],
   "standards": [

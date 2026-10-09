@@ -15,7 +15,7 @@ Build small, verifiable capabilities; inspect architecture from code; review wor
 - **Extensible packs:** standards, skills, checks and reviewer profiles activated through a portable project profile. The initial `web-typescript` pack covers Next.js, React, TypeScript, Supabase/PostgreSQL and Vercel.
 - **Safe local lifecycle:** preview-first installation, collision refusal, private ownership records, guarded rollback and preservation of unrelated configuration.
 
-Scientific/Rust capabilities are not implemented. The core and extension boundaries are ready for additional domains.
+The optional [scientific Rust pack](docs/scientific-rust.md) adds reference characterization, differential test design, numerical review and reproducible performance workflows for research. Activate it explicitly per project; scientific models, datasets and acceptance thresholds stay project-specific.
 
 ## Quick start
 

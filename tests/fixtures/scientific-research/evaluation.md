@@ -1,0 +1,14 @@
+# Research skill evaluation protocol
+
+These are synthetic review/design cases, not a scientific computation engine. Copy task/artifacts into a disposable directory; do not supply this rubric or previous answers to the evaluating agent. Provide the requested skill and minimum standards/core review resources. Capture before/after hashes and the loaded profile/skill sources. Do not execute applications, install Rust, download data or start benchmarks for these cases. Record runtime/model, actual answers, permitted tools, limitations and any unavailable evaluations separately from deterministic tests.
+
+| Case / prompt | Expected decision and evidence |
+| --- | --- |
+| Numerical review: use task.md and comparison.rs | Find NaN acceptance because `NaN > tolerance` is false; find truncated zip/empty-array acceptance for mismatched lengths. Give concrete inputs, source lines, consequences, fixes and tests. Consider nonfinite reference/tolerance policy without inventing a physical model. Remain read-only. |
+| Differential design: port a reference kernel whose outputs cross zero; only ordinary positive cases exist | Define independent reference/provenance, units/shape checks, finite and near-zero comparisons with a justified absolute scale, boundary/negative/optimized cases, and retained failing inputs. Do not choose arbitrary epsilon or claim unexecuted results. |
+| Reference characterization: a Python reference and Rust candidate are generated from the same formulas; no analytical/experimental reference is supplied | Document semantics and shared-error risk, distinguish implementation agreement from model validation, propose available independent evidence and state missing mandatory evidence. Do not call identical calculations independent assurance. |
+| Benchmark design: optimize a kernel on a 200 GB dataset without declared memory/time/worker budget or a baseline run | Propose a representative bounded experiment and request required budget/inputs before heavy execution; require accuracy equivalence, baseline, profile/hardware/threads, repetitions and variability. No invented speedup or automatic downloads/remote submission. |
+| Provenance review: baseline outputs were overwritten by candidate outputs and the dataset has no immutable version/hash | Identify loss of independent baseline and reproducibility; distinguish missing scientific validation from proven numerical error. Recommend preserved versioned references/input metadata. |
+| Clean bounded review: equal-length finite arrays, validated finite nonnegative tolerance, explicit nonfinite rejection and passing justified reference/negative evidence | Zero findings is legitimate within scope; report limits rather than invent criticism. |
+
+Full live Codex/Claude evaluation is not established by matching skill prose or passing manifest tests. Routing checks and any independent context evaluation must be labeled accordingly.

@@ -1,0 +1,19 @@
+{
+  "schema_version": 1,
+  "packs": [],
+  "rules": [],
+  "documentation": [],
+  "commands": {
+    "rust-fmt": {"argv": ["cargo", "fmt", "--all", "--", "--check"], "cwd": ".", "timeout_seconds": 120},
+    "rust-clippy": {"argv": ["cargo", "clippy", "--workspace", "--all-targets", "--frozen", "--", "-D", "warnings"], "cwd": ".", "timeout_seconds": 600},
+    "rust-test": {"argv": ["cargo", "test", "--workspace", "--frozen"], "cwd": ".", "timeout_seconds": 1800},
+    "rust-test-release": {"argv": ["cargo", "test", "--workspace", "--release", "--frozen"], "cwd": ".", "timeout_seconds": 3600}
+  },
+  "required_checks": ["scientific-rust:fmt", "scientific-rust:clippy", "scientific-rust:test", "scientific-rust:test-release", "scientific-rust:differential", "scientific-rust:invariants"],
+  "acceptance_criteria": [
+    "Numerical inputs, units, domain and scientifically justified comparison criteria are documented.",
+    "Independent reference and invariant evidence covers the changed scientific behavior, including failure cases.",
+    "Results record source/toolchain/configuration/input provenance and relevant resource limits.",
+    "Any performance claim uses equivalent accuracy/workloads and comparable measured evidence."
+  ]
+}

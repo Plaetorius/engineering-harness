@@ -1,0 +1,13 @@
+# Rust systems and measured performance
+
+Inspect the workspace, declared MSRV/toolchain, feature combinations and existing checks before choosing commands. Do not assume all features can coexist. Test the feature/target matrix actually used; avoid blindly enabling every feature. Keep debug and optimized correctness checks distinct: profile settings can alter overflow checks, assertions and generated code. Use checked arithmetic or explicit error behavior where sizes/index calculations must not overflow; do not depend on debug-only panics for correctness.
+
+Preserve ownership, bounds, aliasing and thread-safety invariants in numerical buffers. Unsafe code, FFI, SIMD and GPU transfers need explicit safety contracts for shape/layout/alignment, lifetime, synchronization, precision and error propagation. Safe Rust does not validate physics or prevent logical races. Apply project-available sanitizers/Miri or other targeted tools when relevant and supported; never silently install nightly toolchains to run them.
+
+Measure a defined workload against an identified baseline, after checking numerical equivalence. Use the appropriate optimized profile, fixed inputs and controlled thread counts; report warmup, repetitions, variability, units, sample size, hardware and relevant compiler/native-library settings. Distinguish compilation, setup, I/O, transfer and steady-state kernel costs; include end-to-end costs when that is the claim. Consume results so dead-code elimination does not invalidate a microbenchmark.
+
+Control competing workloads, nested BLAS/Rayon/OpenMP pools and oversubscription. Record scaling efficiency and peak memory when relevant. Compare equivalent algorithms, precision, convergence/error targets and data residency. A faster result obtained by weaker accuracy is a trade-off, not an equivalent improvement. Avoid performance claims from asymptotic reasoning alone; classify unmeasured bottlenecks as hypotheses.
+
+Plan limits for memory, output volume and runtime before expensive runs; the harness timeout alone does not bound resources. Use existing benchmark/profiling tools and project reports rather than adding another engine. Do not force benchmarks for edits with no performance acceptance requirement. Repeated timing failures should trigger diagnosis of noise or setup, not favorable-sample selection.
+
+Official references: [Cargo profiles](https://doc.rust-lang.org/cargo/reference/profiles.html), [Cargo bench](https://doc.rust-lang.org/cargo/commands/cargo-bench.html). Stable projects can use their existing custom benchmark harness; do not assume built-in `#[bench]` is available on stable.

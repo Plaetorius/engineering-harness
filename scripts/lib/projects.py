@@ -214,10 +214,13 @@ class Project:
         names = [s["name"] for r in records.values() for s in r["skills"]]
         if len(set(names)) != len(names):
             raise Refusal("Conflicting skill identifiers across active packs")
-        role_ids = [r["id"] for record in records.values()
-                    for r in Pack(record["source"]).manifest.get("reviewers", [])]
-        if len(role_ids) != len(set(role_ids)):
-            raise Refusal("Conflicting reviewer identifiers across active packs")
+        # Removing a pack cannot introduce reviewer collisions. Use ownership
+        # records for removal even when an unrelated payload is unavailable.
+        if action != "deactivate":
+            role_ids = [r["id"] for record in records.values()
+                        for r in Pack(record["source"]).manifest.get("reviewers", [])]
+            if len(role_ids) != len(set(role_ids)):
+                raise Refusal("Conflicting reviewer identifiers across active packs")
         self.audit_collisions(names, old)
         links_before = self.expected_links(old["packs"])
         links_after = self.expected_links(records)

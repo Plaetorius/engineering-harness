@@ -147,6 +147,40 @@ class Modular(unittest.TestCase):
         pack=self.pack();self.activate(pack);shutil.rmtree(pack.root)
         with contextlib.redirect_stdout(io.StringIO()):self.p.mutation('deactivate',pack.id,apply=True)
         self.assertEqual(self.p.inspect()['packs'],[])
+    def test_deactivation_preserves_unrelated_broken_pack(self):
+        for problem in ('missing', 'invalid'):
+            with self.subTest(problem=problem):
+                selected=self.pack('selected-'+problem)
+                remaining=self.pack('remaining-'+problem)
+                for folder in self.p.skill_dirs:
+                    folder.mkdir(parents=True, exist_ok=True)
+                    (folder/'user-config').write_text('preserve me\n')
+                self.activate(selected);self.activate(remaining)
+                record=self.p.state()['packs'][remaining.id]
+                pin=next(p for p in self.p.profile()['packs'] if p['id']==remaining.id)
+                links={folder:os.readlink(folder/(remaining.id+'-review')) for folder in self.p.skill_dirs}
+                if problem=='missing':
+                    shutil.rmtree(remaining.root)
+                else:
+                    (remaining.root/'pack.json').write_text('{}\n')
+                before_profile=self.p.profile_path.read_bytes()
+                before_state=self.p.state_path.read_bytes()
+                with contextlib.redirect_stdout(io.StringIO()):
+                    self.p.mutation('deactivate',selected.id)
+                self.assertEqual(self.p.profile_path.read_bytes(),before_profile)
+                self.assertEqual(self.p.state_path.read_bytes(),before_state)
+                with contextlib.redirect_stdout(io.StringIO()):
+                    self.p.mutation('deactivate',selected.id,apply=True)
+                self.assertNotIn(selected.id,self.p.state()['packs'])
+                self.assertEqual(self.p.state()['packs'][remaining.id],record)
+                self.assertEqual(next(p for p in self.p.profile()['packs'] if p['id']==remaining.id),pin)
+                for folder in self.p.skill_dirs:
+                    self.assertFalse((folder/(selected.id+'-review')).is_symlink())
+                    self.assertEqual(os.readlink(folder/(remaining.id+'-review')),links[folder])
+                    self.assertEqual((folder/'user-config').read_text(),'preserve me\n')
+                with self.assertRaises(Refusal):self.p.inspect()
+                with contextlib.redirect_stdout(io.StringIO()):
+                    self.p.mutation('deactivate',remaining.id,apply=True)
     def test_unowned_destination_refused(self):
         pack=self.pack();folder=self.p.skill_dirs[0];folder.mkdir(parents=True)
         (folder/'example-review').symlink_to(pack.root/'skills/example-review')

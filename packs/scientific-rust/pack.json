@@ -1,0 +1,30 @@
+{
+  "schema_version": 1,
+  "id": "scientific-rust",
+  "version": "0.1.0",
+  "description": "Explicit scientific Rust workflows for numerical correctness, independent references, reproducible research and measured performance.",
+  "skills": [
+    {"name": "scientific-rust-reference-characterization", "path": "skills/scientific-rust-reference-characterization"},
+    {"name": "scientific-rust-differential-test-design", "path": "skills/scientific-rust-differential-test-design"},
+    {"name": "scientific-rust-numerical-correctness-review", "path": "skills/scientific-rust-numerical-correctness-review"},
+    {"name": "scientific-rust-performance-benchmarking", "path": "skills/scientific-rust-performance-benchmarking"}
+  ],
+  "standards": ["standards/numerical-correctness.md", "standards/reproducible-research.md", "standards/rust-performance.md"],
+  "workflows": ["workflows/research.md"],
+  "checks": [
+    {"id": "fmt", "description": "Check project Rust formatting", "project_command": "rust-fmt", "cwd": "project", "timeout_seconds": 120},
+    {"id": "clippy", "description": "Run applicable Rust static analysis", "project_command": "rust-clippy", "cwd": "project", "timeout_seconds": 600},
+    {"id": "test", "description": "Run project Rust tests", "project_command": "rust-test", "cwd": "project", "timeout_seconds": 1800},
+    {"id": "test-release", "description": "Test optimized Rust behavior", "project_command": "rust-test-release", "cwd": "project", "timeout_seconds": 3600},
+    {"id": "differential", "description": "Compare scientific outputs against an independently justified reference", "project_command": "scientific-differential", "cwd": "project", "timeout_seconds": 3600},
+    {"id": "invariants", "description": "Check project scientific invariants, convergence and failure cases", "project_command": "scientific-invariants", "cwd": "project", "timeout_seconds": 3600},
+    {"id": "benchmark", "description": "Run an explicitly budgeted reproducible performance experiment", "project_command": "scientific-benchmark", "cwd": "project", "timeout_seconds": 3600}
+  ],
+  "templates": ["templates/project-profile.example.json", "templates/research-run.md"],
+  "reviewers": [
+    {"id": "scientific-rust-numerical-methods-engineer", "path": "reviewers/scientific-rust-numerical-methods-engineer.md"},
+    {"id": "scientific-rust-hpc-performance-engineer", "path": "reviewers/scientific-rust-hpc-performance-engineer.md"},
+    {"id": "scientific-rust-data-provenance-reviewer", "path": "reviewers/scientific-rust-data-provenance-reviewer.md"}
+  ],
+  "compatibility": {"harness_schema": 1, "runtimes": ["codex", "claude"], "platforms": ["darwin", "linux"]}
+}

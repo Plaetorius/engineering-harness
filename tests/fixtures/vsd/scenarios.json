@@ -1,0 +1,108 @@
+{
+  "schema_version": 1,
+  "scenarios": [
+    {
+      "id": "routine",
+      "prompt": "Change an existing button label from Save to Save changes. Behavior, styling and contracts stay the same. Describe your execution approach.",
+      "rubric": [
+        "Proceed directly with focused verification; no formal slices or delegation."
+      ]
+    },
+    {
+      "id": "capabilities",
+      "prompt": "Plan document sharing and activity history for an existing application. Identity, document ownership and an authorized activity query already exist. Explain implementation boundaries and verification.",
+      "rubric": [
+        "Use bounded outcomes across required components, not frontend/API/storage-only tasks.",
+        "Specify scope, dependencies, criteria, risk and one owner."
+      ]
+    },
+    {
+      "id": "large-feature",
+      "prompt": "Plan a request covering user registration, sign-in, recovery, MFA and administrative account management. Existing identity provider supports these operations. Do not implement.",
+      "rubric": [
+        "Split into smaller usable capabilities; do not label the entire request one indivisible slice.",
+        "Do not split only into technical layers."
+      ]
+    },
+    {
+      "id": "dependencies",
+      "prompt": "An archive CLI needs an agreed entry-selection contract, then extraction using it, then overwrite handling using the same contract. The selection contract is unresolved. Plan readiness and integration.",
+      "rubric": [
+        "Identify foundation/contract dependency and sequence dependent work.",
+        "Do not call extraction Ready without stable contract or explicitly approved test doubles."
+      ]
+    },
+    {
+      "id": "independent",
+      "prompt": "A CLI archive reader contract is stable. Listing and checksum reporting use separate command modules, no shared writes or external mutable state. A coordinator owns dispatch integration. Propose execution.",
+      "rubric": [
+        "Allow justified parallel isolated implementation; do not force strict sequence.",
+        "Identify owners, stable contract and coordinator/integration checks."
+      ]
+    },
+    {
+      "id": "ownership",
+      "prompt": "Two ready slices would modify the same unstable permission resolver and schema. Separate worktrees are available. Should their owners implement concurrently?",
+      "rubric": [
+        "Do not approve competing contract/schema edits merely because worktrees exist.",
+        "Establish one contract owner, stabilize foundation or sequence writes."
+      ]
+    },
+    {
+      "id": "delegation",
+      "prompt": "Delegate archive checksum reporting to a native implementation agent. Reader contract is stable; checksum command module is assigned exclusively. State the assignment and return requirements.",
+      "rubric": [
+        "Include objective, scope/non-goals, files/constraints, interfaces/dependencies, criteria/checks, allowed modifications, expected output, integration responsibilities and escalation.",
+        "Assign one owner and isolate concurrent writes; no custom scheduler."
+      ]
+    },
+    {
+      "id": "failed-gate",
+      "prompt": "Slice permission checks are implemented and merged into the intended baseline. A mandatory cross-owner denial test fails. The owner says done. What status and next action are appropriate?",
+      "rubric": [
+        "Do not mark Accepted; record failed verification/needs rework and investigate.",
+        "An owner completion claim or merged changes do not override failure."
+      ]
+    },
+    {
+      "id": "local-only",
+      "prompt": "All required local tests pass in a separate slice workspace. No changes have been incorporated into the target baseline and no combined regression checks ran. Report status.",
+      "rubric": [
+        "At most Locally Verified, not Integrated or Accepted.",
+        "Name incorporation and combined verification still needed."
+      ]
+    },
+    {
+      "id": "blocked",
+      "prompt": "Checksum metadata semantics cannot be established and no approved reference exists. The owner cannot safely continue. Other independent work is ready. Report status and scheduling.",
+      "rubric": [
+        "Leave this slice Blocked with resume condition; do not mark complete.",
+        "Permit safe independent ready work and escalate correctness uncertainty."
+      ]
+    },
+    {
+      "id": "high-risk",
+      "prompt": "A one-line change adjusts which tenant may read stored records. Compare its plan and verification with a large isolated text-formatting change.",
+      "rubric": [
+        "Risk follows blast radius/consequences, not file count.",
+        "Require invariants, negative/edge/regression evidence and risk-appropriate independent review; avoid shared-state races."
+      ]
+    },
+    {
+      "id": "non-web",
+      "prompt": "Plan a command-line archive tool that lists entries, extracts a selected entry and reports checksum mismatches. No web framework or project profile exists.",
+      "rubric": [
+        "Use portable bounded outcomes, dependencies, ownership and verification without requiring a web pack/profile.",
+        "Treat extraction traversal and overwrite behavior as risk-sensitive."
+      ]
+    },
+    {
+      "id": "exception",
+      "prompt": "Investigate whether a system-wide memory layout refactor is feasible. No implementation is requested and no meaningful independently usable capability can yet be isolated.",
+      "rubric": [
+        "Permit research/architecture exception with reason and bounded evidence plan.",
+        "Do not force artificial slices or implementation/delegation."
+      ]
+    }
+  ]
+}

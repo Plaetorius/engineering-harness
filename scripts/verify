@@ -1,0 +1,10 @@
+#!/bin/bash
+set -eu
+task_repo_dir="$(CDPATH= cd -- "$(dirname -- "$0")/.." && pwd)"
+cd "$task_repo_dir"
+for task_script in scripts/install scripts/doctor scripts/uninstall scripts/verify scripts/harness; do
+  bash -n "$task_script"
+done
+PYTHONDONTWRITEBYTECODE=1 python3 -m unittest discover -s tests/installer -p 'test_*.py' -v
+PYTHONDONTWRITEBYTECODE=1 python3 -m unittest discover -s tests/discovery -p 'test_*.py' -v
+PYTHONDONTWRITEBYTECODE=1 python3 -m unittest discover -s tests/modular -p 'test_*.py' -v

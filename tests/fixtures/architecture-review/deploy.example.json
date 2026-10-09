@@ -1,0 +1,1 @@
+{"exampleOnly": true, "components": ["api", "queue", "cloud-database"], "environmentVariableNames": ["IDENTITY_API_TOKEN"]}

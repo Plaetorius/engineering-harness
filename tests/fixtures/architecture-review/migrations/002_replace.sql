@@ -1,0 +1,2 @@
+DROP TABLE documents;
+CREATE TABLE documents (id INTEGER PRIMARY KEY, body TEXT NOT NULL);

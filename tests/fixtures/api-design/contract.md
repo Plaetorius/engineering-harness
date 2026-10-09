@@ -1,0 +1,1 @@
+Owners may invite members to their workspace. Invitation emails are sent by an external provider. A user belongs to multiple workspaces. Existing users and invitations are stored in PostgreSQL. The endpoint accepts workspace ID and email address. Successful retries should not create duplicate invitations or send duplicate emails.

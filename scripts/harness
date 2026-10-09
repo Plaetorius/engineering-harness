@@ -1,0 +1,5 @@
+#!/bin/bash
+set -eu
+task_repo_dir="$(CDPATH= cd -- "$(dirname -- "$0")/.." && pwd)"
+export PYTHONDONTWRITEBYTECODE=1
+exec python3 "$task_repo_dir/scripts/lib/modular.py" "$@"

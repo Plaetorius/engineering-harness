@@ -1,0 +1,1 @@
+CREATE TABLE documents (id INTEGER PRIMARY KEY, owner_id TEXT NOT NULL, body TEXT NOT NULL);

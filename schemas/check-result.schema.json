@@ -1,0 +1,109 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Engineering Harness check-result",
+  "type": "object",
+  "properties": {
+    "schema_version": {
+      "const": 1
+    },
+    "run_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "profile_digest": {
+      "type": "string",
+      "minLength": 1
+    },
+    "results": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "pack_version": {
+            "type": "string",
+            "minLength": 1
+          },
+          "pack_digest": {
+            "type": "string",
+            "minLength": 1
+          },
+          "status": {
+            "enum": [
+              "success",
+              "failure",
+              "skipped",
+              "execution-error"
+            ]
+          },
+          "duration_seconds": {
+            "type": "number",
+            "minimum": 0
+          },
+          "exit_code": {
+            "type": [
+              "integer",
+              "null"
+            ]
+          },
+          "reason": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "stdout": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "stderr": {
+            "type": [
+              "string",
+              "null"
+            ]
+          }
+        },
+        "required": [
+          "id",
+          "pack_version",
+          "pack_digest",
+          "status",
+          "duration_seconds",
+          "exit_code",
+          "reason",
+          "stdout",
+          "stderr"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "required_checks_passed": {
+      "type": "boolean"
+    },
+    "execution_ok": {
+      "type": "boolean"
+    },
+    "acceptance_criteria": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    }
+  },
+  "required": [
+    "schema_version",
+    "run_id",
+    "profile_digest",
+    "results",
+    "required_checks_passed",
+    "execution_ok",
+    "acceptance_criteria"
+  ],
+  "additionalProperties": false
+}

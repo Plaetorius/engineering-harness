@@ -1,0 +1,53 @@
+{
+  "schema_version": 1,
+  "id": "web-typescript",
+  "version": "1.0.0",
+  "description": "Explicit Next.js, React, TypeScript, Supabase, PostgreSQL and Vercel conventions.",
+  "skills": [
+    {
+      "name": "web-typescript-review",
+      "path": "skills/web-typescript-review"
+    }
+  ],
+  "standards": [
+    "standards/database.md",
+    "standards/frontend.md"
+  ],
+  "workflows": [
+    "workflows/web.md"
+  ],
+  "checks": [
+    {
+      "id": "lint",
+      "description": "Run project lint",
+      "project_command": "lint",
+      "cwd": "project",
+      "timeout_seconds": 600
+    },
+    {
+      "id": "typecheck",
+      "description": "Run project typecheck",
+      "project_command": "typecheck",
+      "cwd": "project",
+      "timeout_seconds": 600
+    },
+    {
+      "id": "build",
+      "description": "Run project build",
+      "project_command": "build",
+      "cwd": "project",
+      "timeout_seconds": 600
+    }
+  ],
+  "compatibility": {
+    "harness_schema": 1,
+    "runtimes": [
+      "codex",
+      "claude"
+    ],
+    "platforms": [
+      "darwin",
+      "linux"
+    ]
+  }
+}

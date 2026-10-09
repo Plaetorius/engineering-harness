@@ -1,0 +1,47 @@
+{
+  "schema_version": 1,
+  "id": "example",
+  "version": "0.1.0",
+  "description": "Synthetic portable extension fixture, without domain conventions.",
+  "skills": [
+    {
+      "name": "example-review",
+      "path": "skills/example-review"
+    }
+  ],
+  "standards": [],
+  "workflows": [
+    "workflow.md"
+  ],
+  "checks": [
+    {
+      "id": "example",
+      "description": "Synthetic successful check",
+      "argv": [
+        "python3",
+        "{pack}/checks/example.py"
+      ],
+      "cwd": "project",
+      "timeout_seconds": 5
+    }
+  ],
+  "templates": [],
+  "tools": [],
+  "compatibility": {
+    "harness_schema": 1,
+    "runtimes": [
+      "codex",
+      "claude"
+    ],
+    "platforms": [
+      "darwin",
+      "linux"
+    ]
+  },
+  "reviewers": [
+    {
+      "id": "example-auditor",
+      "path": "reviewers/example-auditor.md"
+    }
+  ]
+}

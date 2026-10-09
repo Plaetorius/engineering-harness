@@ -1,0 +1,1 @@
+Plan an endpoint to create a workspace invitation. Requests may be retried after a timeout. Explain the contract, permission checks, duplicate behavior and tests; do not implement code or call an external service.

@@ -1,11 +1,12 @@
 #!/usr/bin/env python3
-"""Optional offline rendering with an already installed Mermaid CLI."""
+"""Offline PNG rendering with an already installed Mermaid CLI (mmdc); optionally opens the image for the user."""
 import argparse
 import json
 from pathlib import Path
 import re
 import shutil
 import subprocess
+import sys
 import tempfile
 
 
@@ -31,29 +32,44 @@ def render(source, output_directory):
     config = folder / 'config.json'
     config.write_text(json.dumps({'securityLevel': 'strict', 'startOnLoad': False,
                                  'flowchart': {'htmlLabels': False}}), encoding='utf-8')
-    svg = folder / 'diagram.svg'
+    png = folder / 'diagram.png'
     try:
-        result = subprocess.run([renderer, '-i', str(local_source), '-o', str(svg), '-c', str(config)],
+        # PNG is the default artifact: it opens in any viewer. -s 2 keeps labels sharp; white background for light/dark viewers.
+        result = subprocess.run([renderer, '-i', str(local_source), '-o', str(png), '-c', str(config), '-s', '2', '-b', 'white'],
                                 cwd=folder, capture_output=True, timeout=60)
     except (OSError, subprocess.TimeoutExpired):
         return {'status': 'execution-error', 'syntax_validated': False, 'source': str(local_source),
                 'reason': 'Local renderer could not complete'}
-    if result.returncode != 0 or not svg.is_file() or svg.is_symlink():
+    if result.returncode != 0 or not png.is_file() or png.is_symlink():
         return {'status': 'failure', 'syntax_validated': False, 'source': str(local_source),
                 'reason': 'Local rendering failed; inspect sanitized source and tool compatibility'}
-    return {'status': 'success', 'syntax_validated': True, 'source': str(local_source), 'svg': str(svg)}
+    return {'status': 'success', 'syntax_validated': True, 'source': str(local_source), 'png': str(png)}
+
+
+def open_image(path):
+    """Open the rendered PNG in the user's default viewer. Local file only; never a URL."""
+    opener = shutil.which('open') if sys.platform == 'darwin' else shutil.which('xdg-open')
+    if opener is None:
+        return False
+    try:
+        return subprocess.run([opener, str(path)], capture_output=True, timeout=15).returncode == 0
+    except (OSError, subprocess.TimeoutExpired):
+        return False
 
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('source')
     parser.add_argument('--output-directory', required=True)
+    parser.add_argument('--open', action='store_true', help='open the rendered PNG in the default viewer')
     args = parser.parse_args()
     try:
         result = render(args.source, args.output_directory)
     except (ValueError, OSError, UnicodeError) as exc:
         print(json.dumps({'status': 'refused', 'syntax_validated': False, 'reason': str(exc)}))
         return 1
+    if args.open and result['status'] == 'success':
+        result['opened'] = open_image(result['png'])
     print(json.dumps(result, indent=2))
     return 0 if result['status'] in ('success', 'unavailable') else 1
 

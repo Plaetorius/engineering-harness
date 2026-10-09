@@ -1,6 +1,6 @@
 # Installation
 
-Prerequisites: macOS or Linux, Bash, Python 3.9+ and a stable local checkout. No pip/npm dependencies or network installation. Windows is not supported. Python 3.9+ is needed for path APIs; CI and tests determine actual portability evidence.
+Prerequisites: macOS or Linux, Bash, Python 3.9+ and a stable local checkout. No pip dependencies or network installation by the harness itself. Optional but recommended: the Mermaid CLI, `npm i -g @mermaid-js/mermaid-cli` (provides `mmdc`; downloads a headless Chromium, 150 to 300 MB), which `architecture-map` uses to render and open diagrams as PNG. Without it the skill returns Mermaid source only. Windows is not supported. Python 3.9+ is needed for path APIs; CI and tests determine actual portability evidence.
 
 ```sh
 bash scripts/verify

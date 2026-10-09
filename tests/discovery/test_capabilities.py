@@ -38,6 +38,16 @@ class Capabilities(unittest.TestCase):
             self.assertEqual(result['status'],'success')
             self.assertEqual(source.read_text(),'sequenceDiagram\n participant A\n participant B\n A->>B: request\n')
             self.assertNotEqual(Path(result['source']),source)
+            self.assertTrue(result['png'].endswith('.png'));self.assertTrue(Path(result['png']).is_file())
+    def test_open_image_uses_local_opener_and_never_a_url(self):
+        calls=[]
+        def fake(argv,**kwargs):
+            calls.append(argv);return type('Result',(),{'returncode':0})()
+        with patch.object(renderer.shutil,'which',return_value='/usr/bin/open'),patch.object(renderer.subprocess,'run',side_effect=fake):
+            self.assertTrue(renderer.open_image('/tmp/diagram.png'))
+        self.assertEqual(calls,[[ '/usr/bin/open','/tmp/diagram.png']])
+        with patch.object(renderer.shutil,'which',return_value=None):
+            self.assertFalse(renderer.open_image('/tmp/diagram.png'))
     def test_render_failure_is_not_syntax_success(self):
         with tempfile.TemporaryDirectory() as tmp:
             folder=Path(tmp);source=folder/'source.mmd';source.write_text('flowchart LR\nA --> B\n')

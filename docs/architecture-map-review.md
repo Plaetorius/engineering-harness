@@ -18,10 +18,10 @@ Claude's existing `/review` alias may resolve to its bundled code-review capabil
 
 Architecture maps inspect actual implementations/callers, schemas, tests and relevant configuration. A declared dependency is not an active integration; checked-in infrastructure is not production topology. Relationships are Verified, Inferred or Unknown, with file/line evidence. Maps include canonical Mermaid source, explanation and limitations. Use progressive detail and trace actual error paths for sequences. Never read credential stores or environment-value files; sanitize potentially sensitive source/config extracts before exposing them to a model. If safe evidence is unavailable, omit it and state Unknown. Diagrams must not contain secrets, active links, external images or HTML.
 
-Mermaid source is always available. Interfaces may render fenced Mermaid directly. For offline SVG using an already installed trusted Mermaid CLI:
+Mermaid source is always available. Interfaces may render fenced Mermaid directly. For an offline PNG using an already installed trusted Mermaid CLI (`mmdc`, a harness prerequisite; add `--open` to show the image in the default viewer):
 
 ```sh
-python3 <harness>/skills/architecture-map/scripts/render.py /approved/output/map.mmd --output-directory /approved/output
+python3 <harness>/skills/architecture-map/scripts/render.py /approved/output/map.mmd --output-directory /approved/output --open
 ```
 
 The helper writes a fresh directory, uses strict configuration, accepts a conservative flowchart/sequence subset and never downloads tooling. No renderer yields an explicit unavailable result, not validated syntax. A renderer failure does not prove the source invalid; report compatibility/diagnostic limits. This helper is not a sandbox, secret scanner or dependency engine. Use sanitized generated source and an approved output directory; existing source/artifacts remain untouched. No online rendering service, application startup or dependency installation is part of mapping.

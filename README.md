@@ -19,7 +19,7 @@ The optional [scientific Rust pack](docs/scientific-rust.md) adds reference char
 
 ## Quick start
 
-Requires **macOS or Linux, Bash and Python 3.9+**. No third-party Python runtime dependencies. Review the checkout before installing: changes to canonical files affect future agent context through symlinks.
+Requires **macOS or Linux, Bash and Python 3.9+**. No third-party Python runtime dependencies. Optional: `npm i -g @mermaid-js/mermaid-cli` (`mmdc`) so `architecture-map` can render diagrams to PNG and open them. Review the checkout before installing: changes to canonical files affect future agent context through symlinks.
 
 ```sh
 git clone https://github.com/Plaetorius/engineering-harness.git

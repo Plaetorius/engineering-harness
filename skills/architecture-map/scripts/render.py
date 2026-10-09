@@ -31,7 +31,7 @@ def render(source, output_directory):
     local_source.write_text(text, encoding='utf-8')
     config = folder / 'config.json'
     config.write_text(json.dumps({'securityLevel': 'strict', 'startOnLoad': False,
-                                 'flowchart': {'htmlLabels': False}}), encoding='utf-8')
+                                 'flowchart': {'htmlLabels': False, 'nodeSpacing': 50, 'rankSpacing': 70, 'padding': 12}}), encoding='utf-8')
     png = folder / 'diagram.png'
     try:
         # PNG is the default artifact: it opens in any viewer. -s 2 keeps labels sharp; white background for light/dark viewers.

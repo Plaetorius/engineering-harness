@@ -1,0 +1,22 @@
+From: Dave Ortiz <dortiz@pacificbolt.example>
+To: purchasing@brenner-maschinenbau.example
+Subject: Re: Request for quotation - hex flange bolt M12x50 (FB-1250)
+Date: Mon, 5 Oct 2026 11:30:02 -0700
+
+Hello,
+
+See below. Our quote is USD 0.13 per piece for the quantity you asked for, 30 days ARO, EXW our Ohio warehouse (you arrange pickup / freight forwarder). Quote good through Oct 31, 2026.
+
+Our item no. is PB-FF-M12-50-8.8Z.
+
+Dave Ortiz
+Pacific Bolt & Supply Inc.
+
+> On Wed, 30 Sep 2026, Brenner Maschinenbau GmbH wrote:
+> Dear supplier,
+> please quote the following:
+> Item: hex flange bolt M12x50, grade 8.8, zinc plated (our no. FB-1250)
+> Quantity: 5,000 pcs
+> Delivery wanted: within 6 weeks
+> Our target price: EUR 0.09 / pc
+> Please state price validity, payment terms and freight.

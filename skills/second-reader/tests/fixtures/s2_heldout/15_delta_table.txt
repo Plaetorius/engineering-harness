@@ -1,0 +1,17 @@
+From: Pablo Ruiz <pablo.ruiz@deltapneumatics.example>
+To: einkauf@halden-automation.example
+Subject: RE: RFQ SV-2210-24
+Date: Mon, 28 Sep 2026 16:21:09 +0200
+
+Hi, our offer:
+
+Item | Part no.   | Qty | Unit price | Total
+-----+------------+-----+------------+------------
+ 1   | SV-2210-24 | 200 | 12.85 EUR  | 2,570.00 EUR
+
+Stock: ex stock.
+Payment terms: net 30.
+
+Regards,
+Pablo Ruiz
+Delta Pneumatics S.L.

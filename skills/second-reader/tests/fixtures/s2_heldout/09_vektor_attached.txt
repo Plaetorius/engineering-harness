@@ -1,0 +1,14 @@
+From: Elena Rossi <e.rossi@vektor-automation.example>
+To: purchasing@halden-automation.example
+Subject: Quotation 44721 - solenoid valves
+Date: Wed, 30 Sep 2026 16:45:09 +0200
+
+Dear Purchasing Team,
+
+Please find attached our quotation no. 44721 (Quote_44721.pdf, 3 pages) for the requested solenoid valves. Prices, lead time and validity are as shown on page 2. Please call me if anything is unclear.
+
+Kind regards,
+Elena Rossi
+Vektor Automation S.r.l.
+
+This message and any attachment are confidential and intended solely for the addressee. If you received it in error, please delete it and notify the sender. Vektor Automation S.r.l., VAT IT01234567890.

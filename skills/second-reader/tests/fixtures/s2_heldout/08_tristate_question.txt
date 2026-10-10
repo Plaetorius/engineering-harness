@@ -1,0 +1,9 @@
+From: marcus@tristatefluid.example
+To: purchasing@halden-automation.example
+Subject: RE: RFQ solenoid valve SV-2210-24
+Date: Tue, 29 Sep 2026 09:50:21 -0400
+
+hello - before i can price this, is the G1/4 thread BSPP or NPT? and is the valve normally closed or normally open? also 2/2 or 3/2 way? send those and ill get you numbers same day.
+
+Marcus Lee
+Sales, Tri-State Fluid Sales LLC

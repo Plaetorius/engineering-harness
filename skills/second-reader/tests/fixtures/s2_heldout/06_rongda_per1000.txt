@@ -1,0 +1,16 @@
+From: Lily Chen <lily@rongda-fluid.example>
+To: purchasing@halden-automation.example
+Subject: RE: RFQ solenoid valve 24VDC G1/4
+Date: Mon, 28 Sep 2026 03:37:50 +0800
+
+Dear Sir,
+
+Our model RD-SV2210-24V is equivalent to your SV-2210-24 (24VDC, G1/4).
+Price: USD 18,500.00 per 1000 pcs, FOB Shenzhen. MOQ 100 pcs.
+For 200 pcs. Production lead time 45 days ARO.
+Freight to your port to be quoted separately after we know the destination.
+Quote valid to 15-Nov-2026.
+
+Best regards
+Lily Chen
+Shenzhen Rongda Fluid Co., Ltd

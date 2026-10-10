@@ -1,0 +1,18 @@
+From: Lena Andersson <lena@nordfix.example>
+To: purchasing@brenner-maschinenbau.example
+Subject: RFQ FB-1250 - partial offer
+Date: Thu, 1 Oct 2026 13:07:50 +0200
+
+Dear Brenner team,
+
+We unfortunately cannot cover the full 5,000 pcs at the moment. What we can offer right now:
+
+HFB M12x50 8.8 zn - 3,000 pcs at EUR 0.118 per piece, delivery within 2 weeks, free delivery to your site. Offer valid until 2026-10-30.
+
+For the remaining 2,000 pcs we cannot give a firm date yet, a new batch from our plant is not confirmed.
+
+Let us know if the partial quantity works for you.
+
+Kind regards,
+Lena Andersson
+Nordfix AB

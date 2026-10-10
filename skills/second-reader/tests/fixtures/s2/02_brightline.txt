@@ -1,0 +1,18 @@
+From: sales@brightline-ind.example
+To: purchasing@halden-automation.example
+Subject: Quote - solenoid valve SV2210-24
+
+Dear Sir/Madam,
+
+Please find our offer for item SV2210-24 (24VDC solenoid valve):
+
+Qty: 200
+Unit price: USD 38.40
+Terms: EXW Ohio warehouse. Shipping and export handling to your site: USD 180 (one-off).
+Lead time: 10 business days from order.
+
+Prices in USD. Offer open for 30 days.
+
+Regards,
+Dave Merrick
+Brightline Industrial Supply

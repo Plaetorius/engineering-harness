@@ -1,0 +1,18 @@
+From: Paul Heller <paul@hellerfasteners.example>
+To: purchasing@brenner-maschinenbau.example
+Subject: Re: RFQ hex flange bolt M12x50 8.8 zn
+Date: Fri, 2 Oct 2026 11:15:26 +0100
+
+Hi,
+
+Unfortunately grade 8.8 zinc plated in M12x50 is sold out until Q1 and we can't promise a date. What we do have is the 10.9 version, same dimensions and plating. If that is acceptable as a stronger substitute:
+
+DIN 6921 M12x50 10.9 zn - 5,000 pcs - USD 0.162 per piece
+Delivery 4 weeks, delivered to your door (freight included)
+Quote valid 30 days
+
+Please confirm if 10.9 works for you, we can't offer the 8.8.
+
+Regards,
+Paul Heller
+Heller Fasteners Ltd

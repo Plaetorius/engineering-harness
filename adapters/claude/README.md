@@ -1,6 +1,6 @@
 # Claude local adapter
 
-The baseline links the canonical core into the user `rules/engineering-harness.md`, and six individual skill entry points into user `skills/`. Existing CLAUDE files, rules, hooks and plugins remain. Symlinked user rules avoid project external-import approval; project rules have different constraints. See [official user rules](https://code.claude.com/docs/en/memory#user-level-rules).
+The baseline links the canonical core into the user `rules/engineering-harness.md`, and seven individual skill entry points into user `skills/`. Existing CLAUDE files, rules, hooks and plugins remain. Symlinked user rules avoid project external-import approval; project rules have different constraints. See [official user rules](https://code.claude.com/docs/en/memory#user-level-rules).
 
 `project-instructions.patch.json` is an opt-in subtree, never a replacement settings file. The installer supports Claude 2.1.285+ for this new built-in ID and rejects explicit conflicting mode/disabled support. Use `--claude-project-instructions both` to preview/apply. No hooks or model settings are provided.
 

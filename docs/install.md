@@ -29,7 +29,7 @@ This requires installed Claude 2.1.285+ and sets both-file project discovery. It
 
 ## Default discovery
 
-The same canonical core is linked into Codex global AGENTS and Claude user rules. Six canonical skill entry-point directories are linked into both user skill paths. Portable standards are accessed from the resolved source repository; vertical standards/roles require explicit project activation. Project AGENTS remains owned by each project; an optional [template](../templates/AGENTS.md) is available.
+The same canonical core is linked into Codex global AGENTS and Claude user rules. Seven canonical skill entry-point directories are linked into both user skill paths. Portable standards are accessed from the resolved source repository; vertical standards/roles require explicit project activation. Project AGENTS remains owned by each project; an optional [template](../templates/AGENTS.md) is available.
 
 Start fresh sessions after installation. Existing resumed sessions may retain old context. See [CLI verification protocol](../tests/discovery/manual-cli-protocol.md). Doctor validates files and configuration, not model obedience or effective managed policy. Canonical content edits take effect through existing links; reinstall preview shows a private provenance-hash refresh, and authorized apply records it without replacing links.
 

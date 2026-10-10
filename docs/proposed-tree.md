@@ -4,7 +4,7 @@ See [architecture](architecture.md) for the implemented boundaries and [pack aut
 
 ```text
 core/                       shared instructions
-skills/                     six portable skill entry points
+skills/                     seven portable skill entry points
 standards/                  portable principles, review perspectives and migration notices
 packs/web-typescript/       first explicitly activated vertical
 schemas/                    pack, project and result contracts

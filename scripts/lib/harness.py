@@ -15,7 +15,7 @@ import sys
 import tempfile
 import uuid
 
-SKILLS = ("plan-feature", "implement-api", "review-diff", "debug-root-cause", "architecture-map", "review")
+SKILLS = ("plan-feature", "implement-api", "review-diff", "debug-root-cause", "architecture-map", "review", "eval-driven-development")
 MODE = "claude-md-and-agents-md"
 PLUGIN = "cc-plugin-agents-md@builtin"
 LEGACY_PLUGIN = "agents-md@builtin"

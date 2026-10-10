@@ -1,0 +1,19 @@
+#!/bin/bash
+# second-reader launcher. CSV/JSON and all ledger commands need only python3. openpyxl is needed only to READ an
+# .xlsx/.xlsm (ingest); use the system module if present, otherwise provide it via uv (pinned).
+set -eu
+dir="$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)"
+export PYTHONDONTWRITEBYTECODE=1
+OPENPYXL_PIN="openpyxl==3.1.5"
+need_xlsx=0
+for a in "$@"; do
+  case "$(printf '%s' "$a" | tr '[:upper:]' '[:lower:]')" in *.xlsx|*.xlsm) need_xlsx=1 ;; esac
+done
+if [ "$need_xlsx" = 1 ] && ! python3 -c 'import openpyxl' 2>/dev/null; then
+  if command -v uv >/dev/null 2>&1; then
+    exec uv run --quiet --no-project --with "$OPENPYXL_PIN" python "$dir/sr.py" "$@"
+  fi
+  echo "error: reading .xlsx needs openpyxl (pip install openpyxl) or uv" >&2
+  exit 2
+fi
+exec python3 "$dir/sr.py" "$@"

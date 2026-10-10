@@ -1,0 +1,107 @@
+{
+ "heldout.local": {
+  "accuracy": 0.9453,
+  "fields": 128,
+  "by_field": {
+   "supplier": 0.867,
+   "part_number": 0.929,
+   "quantity": 0.786,
+   "unit_price": 1.0,
+   "currency": 1.0,
+   "price_basis": 1.0,
+   "lead_time": 0.923,
+   "freight": 1.0,
+   "valid_until": 1.0,
+   "no_offer": 1.0
+  }
+ },
+ "heldout.haiku": {
+  "accuracy": 0.8947,
+  "fields": 133,
+  "by_field": {
+   "supplier": 1.0,
+   "part_number": 0.786,
+   "quantity": 0.857,
+   "unit_price": 0.857,
+   "currency": 0.929,
+   "price_basis": 1.0,
+   "lead_time": 1.0,
+   "freight": 0.923,
+   "valid_until": 1.0,
+   "spurious_line": 0.0,
+   "no_offer": 1.0
+  }
+ },
+ "heldout.haiku3": {
+  "accuracy": 0.9531,
+  "fields": 128,
+  "by_field": {
+   "supplier": 1.0,
+   "part_number": 0.786,
+   "quantity": 0.929,
+   "unit_price": 1.0,
+   "currency": 0.929,
+   "price_basis": 1.0,
+   "lead_time": 1.0,
+   "freight": 0.923,
+   "valid_until": 1.0,
+   "no_offer": 1.0
+  }
+ },
+ "sealed.local": {
+  "accuracy": 0.6789,
+  "fields": 109,
+  "by_field": {
+   "supplier": 0.786,
+   "part_number": 0.273,
+   "quantity": 0.455,
+   "unit_price": 0.818,
+   "currency": 1.0,
+   "price_basis": 0.8,
+   "lead_time": 0.545,
+   "freight": 0.636,
+   "valid_until": 0.923,
+   "spurious_line": 0.0,
+   "no_offer": 0.667
+  }
+ },
+ "sealed.haiku": {
+  "accuracy": 0.8,
+  "fields": 110,
+  "by_field": {
+   "supplier": 1.0,
+   "part_number": 0.545,
+   "quantity": 0.636,
+   "unit_price": 0.818,
+   "currency": 0.909,
+   "price_basis": 0.8,
+   "lead_time": 0.909,
+   "freight": 0.818,
+   "valid_until": 1.0,
+   "spurious_line": 0.0,
+   "no_offer": 1.0
+  }
+ },
+ "sealed.haiku3": {
+  "accuracy": 0.9143,
+  "fields": 105,
+  "by_field": {
+   "supplier": 1.0,
+   "part_number": 0.909,
+   "quantity": 0.727,
+   "unit_price": 1.0,
+   "currency": 1.0,
+   "price_basis": 0.9,
+   "lead_time": 0.818,
+   "freight": 0.818,
+   "valid_until": 1.0,
+   "no_offer": 1.0
+  }
+ },
+ "unit": {
+  "tests": 111,
+  "failures": 0,
+  "skipped": 1
+ },
+ "date": "2026-10-09"
+}

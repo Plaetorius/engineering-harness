@@ -1,0 +1,18 @@
+From: Katrin Vogel <k.vogel@alpinefluid.example>
+To: purchasing@halden-automation.example
+Subject: RE: RFQ SV-2210-24 x200
+Date: Mon, 28 Sep 2026 09:14
+
+Hi,
+
+thanks for your inquiry. We can supply the SV-2210-24 as requested.
+
+200 pcs at EUR 31.50 each. Delivery to your plant is 3 weeks after PO
+confirmation. Freight is not included, we'd charge a flat EUR 120 for
+a 200-piece pallet.
+
+Quote valid until 16 Oct 2026. Payment 30 days net.
+
+Best regards,
+Katrin Vogel
+Alpine Fluid Components AG

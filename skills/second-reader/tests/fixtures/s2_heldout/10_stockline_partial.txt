@@ -1,0 +1,14 @@
+From: Peter Haan <peter@stockline-supply.example>
+To: purchasing@halden-automation.example
+Subject: RE: RFQ 200 pcs SV-2210-24
+Date: Wed, 30 Sep 2026 12:30:00 +0200
+
+Hello,
+
+we can only partly help. We have 120 pcs of SV-2210-24 in stock, ex stock, shipped right away, at €15.90 /pc. The other 80 pcs are not available before 2027, sorry.
+
+Freight is free above 5000 EUR order value, otherwise we charge shipping at cost.
+This offer is valid 14 days from today.
+
+Peter Haan
+Stockline Supply

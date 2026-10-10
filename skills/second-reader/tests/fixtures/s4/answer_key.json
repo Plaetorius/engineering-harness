@@ -1,0 +1,14 @@
+{
+  "bid": {"unit_price_eur": 48.00, "qty": 200, "revenue_eur": 9600.00, "max_lead_time_days": 28},
+  "quotes": [
+    {"supplier": "Alpine Fluid Components", "part_number": "SV-2210-24", "qty": 200, "unit_price": 31.50, "currency": "EUR", "freight": 120.00, "lead_time": "3 weeks (21 d)", "landed_cost_eur": 6420.00, "meets_lead_time": true,  "meets_qty": true,  "margin_eur": 3180.00, "margin_pct": 33.1},
+    {"supplier": "Brightline Industrial",  "part_number": "SV2210-24 (= SV-2210-24)", "qty": 200, "unit_price": 38.40, "currency": "USD", "freight": 180.00, "lead_time": "10 business days (~14 d)", "landed_cost_eur": 7277.78, "meets_lead_time": true,  "meets_qty": true,  "margin_eur": 2322.22, "margin_pct": 24.2},
+    {"supplier": "Corvus Hydraulik",       "part_number": "SV-2210-24", "qty": 200, "unit_price": 34.00, "currency": "EUR", "freight": 0, "lead_time": "ships in 2 working days", "landed_cost_eur": 6800.00, "meets_lead_time": true,  "meets_qty": true,  "margin_eur": 2800.00, "margin_pct": 29.2},
+    {"supplier": "Delta Supply",           "part_number": "SV-2210-24A (supersedes SV-2210-24)", "qty": "150 now + 50 in ~6 weeks", "unit_price": 30.90, "currency": "EUR", "freight": 0, "lead_time": "now (150) / ~6 weeks (50)", "landed_cost_eur": 6180.00, "meets_lead_time": false, "meets_qty": "partial", "note": "full quantity not deliverable in 28 d; revision A needs customer approval"},
+    {"supplier": "Eurotec Valves",         "part_number": "SV-2210-24", "qty": 200, "unit_price": 29.95, "currency": "EUR", "freight": 0, "lead_time": "12 weeks (84 d)", "landed_cost_eur": 5990.00, "meets_lead_time": false, "meets_qty": true, "note": "50% prepayment"},
+    {"supplier": "Nordic Pneumatics",      "decline": true, "reason": "part discontinued"}
+  ],
+  "best_quote": "Alpine Fluid Components",
+  "rationale": "Lowest landed cost among quotes meeting qty and the 28-day lead time. Cheaper unit prices (Eurotec, Delta) fail delivery/quantity; Corvus is faster but EUR 380 more expensive.",
+  "margin": {"revenue_eur": 9600.00, "cost_eur": 6420.00, "margin_eur": 3180.00, "margin_pct_of_revenue": 33.125, "markup_pct_on_cost": 49.53}
+}

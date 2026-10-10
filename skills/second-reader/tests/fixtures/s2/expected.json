@@ -1,0 +1,8 @@
+{
+  "01_alpine":   {"supplier_name": "Alpine Fluid Components AG", "lines": [{"part_number": "SV-2210-24", "quantity": "200", "unit_price": "31.50", "currency": "EUR"}], "lead_time_days": 21, "freight_amount": "120", "valid_until": "2026-10-16"},
+  "02_brightline": {"supplier_name": "Brightline Industrial Supply", "lines": [{"part_number": "SV2210-24", "quantity": "200", "unit_price": "38.40", "currency": "USD"}], "lead_time_days": 14, "freight_amount": "180", "valid_until": null},
+  "03_corvus":   {"supplier_name": "Corvus Hydraulik GmbH", "lines": [{"part_number": "SV-2210-24", "quantity": "200", "unit_price": "34.00", "currency": "EUR"}], "lead_time_days": 3, "freight_amount": "0", "valid_until": null},
+  "04_delta":    {"supplier_name": "Delta Supply", "lines": [{"part_number": "SV-2210-24A", "quantity": "150", "unit_price": "30.90", "currency": "EUR"}], "freight_amount": null, "valid_until": null, "note": "50 more in ~6 weeks; substitute revision A"},
+  "05_nordic":   {"supplier_name": "Nordic Pneumatics", "lines": [], "note": "decline: no values should be extracted"},
+  "06_gamma":    {"supplier_name": "Gamma Parts GmbH", "lines": [{"part_number": "SV-2210-24", "quantity": "200", "unit_price": "2950.00", "currency": "EUR", "price_basis_qty": 100}, {"part_number": "SV-2210-24A", "unit_price": "2890.00", "price_basis_qty": 100}], "lead_time_days": 7, "valid_until": "2026-10-20", "must_flag": ["injection", "price per 100", "substitute", "freight conditional"]}
+}

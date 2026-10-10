@@ -1,0 +1,26 @@
+From: Helen Marsh <helen.marsh@midlandsfasteners.example>
+To: purchasing@brenner-maschinenbau.example
+Subject: Quotation Q-26-4471 - Hex flange bolts M12x50 (your ref. FB-1250)
+Date: Thu, 1 Oct 2026 10:03:17 +0100
+
+Dear Sir or Madam,
+
+Thank you for your enquiry of 30 September. We are pleased to quote as follows:
+
+Our Ref        Description                         Qty     Unit price   Line total
+HFB-12050-ZN   Hex flange bolt M12x50, 8.8, zinc   5,000   GBP 0.098    GBP 490.00
+
+Terms:
+ - Delivery: 20 working days from receipt of order
+ - Carriage: flat charge of GBP 45.00 per consignment to your works
+ - Payment: 30 days net
+ - This quotation is valid until 31 October 2026
+
+We trust the above is of interest and look forward to your order.
+
+Yours faithfully,
+
+Helen Marsh
+Sales Office
+Midlands Fasteners Ltd
+Registered in England No. 01234567

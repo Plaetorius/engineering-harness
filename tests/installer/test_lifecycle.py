@@ -105,13 +105,13 @@ class Lifecycle(Fixture):
                 target=dest.resolve()
                 self.assertIn('../../standards/vertical-slice-delivery.md',(dest/'SKILL.md').read_text())
                 self.assertEqual((target/'../../standards/vertical-slice-delivery.md').resolve(),policy)
-    def test_upgrade_preserves_legacy_links_and_adds_two_skills(self):
+    def test_upgrade_preserves_legacy_links_and_adds_new_skills(self):
         legacy=harness.SKILLS[:4]
         with patch.object(harness,'SKILLS',legacy):self.install()
         previous=self.h.load(self.h.manifest)
         self.install()
         current=self.h.load(self.h.manifest)
-        self.assertEqual(len(current['links']),14)
+        self.assertEqual(len(current['links']),2+2*len(harness.SKILLS))
         self.assertTrue(all(link in current['links'] for link in previous['links']))
         self.quiet(self.h.uninstall,apply=True)
         for path,_ in self.h.links():self.assertFalse(harness.exists(path))

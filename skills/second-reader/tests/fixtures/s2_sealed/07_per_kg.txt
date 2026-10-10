@@ -1,0 +1,20 @@
+From: Stefan Becker <sbecker@stahlhandel-becker.example>
+To: purchasing@brenner-maschinenbau.example
+Subject: Offer hex flange bolt M12x50 8.8
+Date: Mon, 5 Oct 2026 07:48:13 +0200
+
+Hello,
+
+here is our offer:
+
+- Item: hex flange bolt M12x50, 8.8, zinc plated (our art. 6921-12-50-VZ)
+- Quantity: 5000 pcs
+- Price: EUR 2.85 per kg
+- Weight: approx. 47 g per piece, so about 235 kg for the lot
+- Delivery: approx. 6 weeks
+- Freight: EUR 38 per pallet, ex works Dortmund (approx. 2 pallets)
+- Payment: 30 days net
+
+Best regards
+Stefan Becker
+Stahlhandel Becker

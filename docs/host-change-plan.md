@@ -7,7 +7,7 @@ Keep the canonical checkout at a stable location. Always preview installation an
 | CODEX_HOME/AGENTS.md | Canonical core instructions |
 | CLAUDE_CONFIG_DIR/rules/engineering-harness.md | Same canonical core instructions |
 | ~/.agents/skills/<skill> | Six canonical skill entry points |
-| CLAUDE_CONFIG_DIR/skills/<skill> | Same six canonical skill entry points |
+| CLAUDE_CONFIG_DIR/skills/<skill> | Same seven canonical skill entry points |
 | ~/.engineering-harness/ | Private ownership, lock, journal and optional backup |
 
 Default homes are ~/.codex and ~/.claude. Alternate homes/state directories require their own resolved preview. Existing instructions, skills, hooks, permissions, model settings and shell startup files remain user-owned. The installer refuses unowned destinations and records exact link identities; it does not silently adopt matching links.

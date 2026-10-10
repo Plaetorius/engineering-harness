@@ -1,0 +1,15 @@
+#!/bin/bash
+# sr-offline: the no-AI, no-network pipeline for confidential documents.
+#   sr-offline <files-or-folders...> --out report.html [--part P --qty N --need-by-days D --bid-price B --currency C --fx USD=1.08]
+# Everything is read by local rules and checked by code on this machine. An AI assistant that operates this tool and reads
+# its output is NOT offline: for client data that must not leave the machine, run it yourself and open the HTML report.
+set -eu
+dir="$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)"
+export SR_OFFLINE=1 PYTHONDONTWRITEBYTECODE=1
+need_xlsx=0
+for a in "$@"; do case "$(printf '%s' "$a" | tr '[:upper:]' '[:lower:]')" in *.xlsx|*.xlsm) need_xlsx=1 ;; esac; done
+if [ "$need_xlsx" = 1 ] && ! python3 -c 'import openpyxl' 2>/dev/null; then
+  echo "error: reading .xlsx needs openpyxl installed locally (pip install openpyxl); offline mode never downloads anything" >&2
+  exit 2
+fi
+exec python3 "$dir/sr.py" offline-run "$@"

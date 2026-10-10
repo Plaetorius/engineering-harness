@@ -1,0 +1,16 @@
+From: Petra Lindqvist <petra@scandifix.example>
+To: purchasing@brenner-maschinenbau.example
+Subject: Questions re RFQ M12x50
+Date: Mon, 5 Oct 2026 09:05:40 +0200
+
+Hello,
+
+before we can quote, a few questions:
+1. Is the zinc plating to ISO 4042 (A2C) or do you need zinc-nickel?
+2. Flange bolt per DIN 6921 or EN 1665?
+3. Is the 6 week delivery fixed or is there flexibility?
+
+We will send the price as soon as we have your answers.
+
+Petra Lindqvist
+Scandifix

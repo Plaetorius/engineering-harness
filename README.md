@@ -30,7 +30,7 @@ bash scripts/install --apply     # apply the reviewed installation
 bash scripts/doctor
 ```
 
-Installation links the core instructions and six skill entry points into the native user discovery paths. It does not replace Codex/Claude configuration, change permissions or activate packs automatically. Start a fresh agent session after installation.
+Installation links the core instructions and seven skill entry points into the native user discovery paths. It does not replace Codex/Claude configuration, change permissions or activate packs automatically. Start a fresh agent session after installation.
 
 Claude's optional project AGENTS/CLAUDE coexistence setting is a separate backed-up operation. See [installation and troubleshooting](docs/install.md) before using it. If Claude settings were edited after that patch, use the documented `--preserve-settings` option for a link-only update; automatic uninstall still refuses to overwrite later edits.
 

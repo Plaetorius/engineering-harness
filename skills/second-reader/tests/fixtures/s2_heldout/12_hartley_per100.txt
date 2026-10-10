@@ -1,0 +1,15 @@
+From: jo@hartleyfluidpower.example
+To: purchasing@halden-automation.example
+Subject: re: solenoid valves
+Date: Wed, 30 Sep 2026 08:15:30 +0100
+
+hi, prices for sv-2210-24 are per 100 pcs, in sterling:
+
+100-199 pcs   £1,720.00
+200-499 pcs   £1,585.00
+500+          £1,490.00
+
+2 wks lead time. carriage £35 flat per consignment. price valid until 2026-10-30.
+
+cheers
+jo @ hartley fluid power

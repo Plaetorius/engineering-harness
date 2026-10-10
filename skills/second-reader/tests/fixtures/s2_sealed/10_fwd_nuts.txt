@@ -1,0 +1,27 @@
+From: Katrin Vogel <k.vogel@vogel-befestigung.example>
+To: purchasing@brenner-maschinenbau.example
+Subject: FW: Anfrage Flanschschrauben M12x50 - Angebot
+Date: Fri, 2 Oct 2026 15:02:11 +0200
+
+Hello,
+
+as discussed, please find our offer below (forwarded from our product manager).
+
+Hex flange bolt M12x50, 8.8, zinc: EUR 0.104 per piece for 5,000 pcs (MOQ 1,000 pcs, no setup fee).
+Delivery: KW 45.
+Freight will be charged at cost.
+
+If you also need the matching nuts, M12 flange nut 8 zn is EUR 0.021 per piece - just for your information, not part of this RFQ.
+
+Best regards
+Katrin Vogel
+Vogel Befestigungstechnik GmbH
+
+-----Original Message-----
+From: Martin Reuter <m.reuter@vogel-befestigung.example>
+To: Katrin Vogel <k.vogel@vogel-befestigung.example>
+Sent: Thursday, 1 October 2026 17:44
+Subject: Anfrage Flanschschrauben M12x50
+
+Katrin, kannst du dem Kunden Brenner ein Angebot schicken? Die wollen 5000 Stück M12x50 Flanschschrauben 8.8 verzinkt, Lieferung in 6 Wochen. Alter Preis aus dem Frühjahr war 0,099 pro Stück, ist aber überholt, bitte neu kalkulieren.
+Gruß Martin

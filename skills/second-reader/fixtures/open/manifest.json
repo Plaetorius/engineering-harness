@@ -1,0 +1,66 @@
+{
+  "note": "Open-data fixtures. Downloaded files are untrusted data: each lives in its own directory under data/, which is git-ignored. Terms were checked on the source page on the date recorded.",
+  "sources": [
+    {
+      "id": "uci_online_retail",
+      "title": "Online Retail (UCI ML Repository #352), UK online retailer transactions 2010-12-01..2011-12-09",
+      "page": "https://archive.ics.uci.edu/dataset/352/online+retail",
+      "licence": "CC BY 4.0",
+      "attribution": "Chen, Daqing (2015). Online Retail. UCI Machine Learning Repository.",
+      "terms_checked": "2026-10-09",
+      "rows": 541909,
+      "use": "Real transactional data: text ids, mixed-case ids, returns/negative qty, zero prices, exact duplicate rows, null customers, per-item price variation. No line-total column (S1 derives one in a planted-error copy).",
+      "kind": "xlsx",
+      "downloads": [
+        {
+          "url": "https://archive.ics.uci.edu/static/public/352/online+retail.zip",
+          "sha256": "f5385cbb54bbebf7196389109c6b0621faab0c304e3702548165e71c84aede8b",
+          "unpack": "zip",
+          "expect": {
+            "Online Retail.xlsx": "43465a06f2ccf7c8b5bd2892bc7defb52f97487934fe93b16ae4c3936424676d"
+          }
+        }
+      ]
+    },
+    {
+      "id": "spamassassin_public_corpus",
+      "title": "SpamAssassin public mail corpus 2003-02-28 (easy ham, hard ham, spam): real raw RFC-822 emails",
+      "page": "https://spamassassin.apache.org/old/publiccorpus/",
+      "licence": "Public corpus offered for testing mail-processing systems (messages from public fora or sent with the knowledge they may be published); readme asks not to feed it into live mail systems",
+      "attribution": "The Apache SpamAssassin Project public corpus",
+      "terms_checked": "2026-10-09",
+      "downloads": [
+        {
+          "url": "https://spamassassin.apache.org/old/publiccorpus/20030228_easy_ham.tar.bz2",
+          "sha256": "2b7b65904bcfcc31d2b5f51946f2d261370b257402cbbd62930b46ab83367438",
+          "unpack": "tar",
+          "expect_count": 2500
+        },
+        {
+          "url": "https://spamassassin.apache.org/old/publiccorpus/20030228_hard_ham.tar.bz2",
+          "sha256": "ce2ce67880643dbde65ea7f85bffbfe4417349c4bd80b6b0de56262ae6b0a9c9",
+          "unpack": "tar",
+          "expect_count": 250
+        },
+        {
+          "url": "https://spamassassin.apache.org/old/publiccorpus/20030228_spam.tar.bz2",
+          "sha256": "c08debc32413804949a866be45ef78195cec2cbafd1da744ed76cdb860589743",
+          "unpack": "tar",
+          "expect_count": 500
+        }
+      ],
+      "use": "Parser robustness on real, messy emails (multipart, charsets, HTML-only, odd headers) and the false-positive rate of the injection scan on genuine business-like mail. Parsed offline only; never sent anywhere.",
+      "kind": "eml-raw"
+    },
+    {
+      "id": "vne_mtr_sample",
+      "title": "VNE Stainless MTR portal: stratified sample of 25 certificates (3.1 stainless fittings)",
+      "page": "https://mtr.vnestainless.com/",
+      "licence": "NOT VERIFIED: public anonymous portal; internal testing only, do not redistribute",
+      "terms_checked": null,
+      "fetch": "downloaded with the user's own scraper logic (Plaetorius/mertia-data): index pages 1,30,60,90,115 (first 5 certs each), 1 request/second",
+      "use": "real MTR PDFs (text layer and scans) to exercise PDF/OCR, injection scan and report; no ground truth",
+      "downloads": []
+    }
+  ]
+}

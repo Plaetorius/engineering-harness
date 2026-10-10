@@ -1,0 +1,23 @@
+From: Tom Reilly <treilly@midwestvalve.example>
+To: purchasing@halden-automation.example
+Subject: Quote MV-88213 / SV-2210-24 solenoid valve
+Date: Tue, 29 Sep 2026 15:20:33 -0500
+
+Hello,
+
+Thanks for the inquiry. Quote date 29 Sep 2026. Pricing in USD, per piece:
+
+  Qty range   | Unit price (USD) | Part
+  ------------+------------------+-----------
+  1 - 99      |            22.40 | SV-2210-24
+  100 - 199   |            19.75 | SV-2210-24
+  200 - 499   |            17.90 | SV-2210-24
+  500+        |            16.20 | SV-2210-24
+
+Lead time: 10 working days from PO.
+Freight is charged per pallet at $85.00; number of pallets depends on packing.
+Quote valid 30 days from quote date.
+
+Best,
+Tom Reilly
+Midwest Valve Supply, Inc.

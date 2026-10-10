@@ -1,0 +1,24 @@
+From: Sarah Whitlock <sarah.whitlock@northgate-components.example>
+To: purchasing@halden-automation.example
+Subject: Re: RFQ - 200 pcs solenoid valve SV-2210-24
+Date: Wed, 30 Sep 2026 10:05:12 +0100
+
+Hi,
+
+Please see answers below the line, prices inline.
+
+> From: purchasing@halden-automation.example
+> Sent: 28 September 2026
+> Subject: RFQ - 200 pcs solenoid valve SV-2210-24
+>
+> Please quote 200 pcs solenoid valve 24VDC G1/4, our P/N SV-2210-24.
+> Needed within 4 weeks. Our last order was at 13.50 EUR per piece
+> with 3 weeks lead time. Please quote by 5 October 2026.
+
+Sorry, we cannot get near that price now. Our offer:
+SV-2210-24, 200 pcs, £16.40 per piece, delivery 2 wks from order, carriage included.
+Price good until October 30th.
+
+Kind regards,
+Sarah Whitlock
+Northgate Components Ltd

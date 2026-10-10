@@ -1,0 +1,18 @@
+From: Joost de Vries <joost@valvetech-europe.example>
+To: purchasing@halden-automation.example
+Subject: SV-2210-24 superseded / quote
+Date: Tue, 29 Sep 2026 14:08:44 +0200
+
+Dear colleague,
+
+Note that SV-2210-24 is end of life. Two options for your 200 pcs:
+
+ 1. SV-2210-24 (old version, last-time-buy stock): 13.20 euro per piece
+ 2. SV-2210-24B (superseding part, same G1/4 and 24VDC, same footprint): 14.60 euro per piece
+
+Both ship within 15 business days of order. Shipping 29 EUR flat per order.
+Offer valid until 16 Oct 2026.
+
+Regards,
+Joost de Vries
+Valvetech Europe B.V.

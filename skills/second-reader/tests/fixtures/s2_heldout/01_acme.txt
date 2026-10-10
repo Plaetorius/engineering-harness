@@ -1,0 +1,10 @@
+From: Dave Morris <dave@acmefluid.example>
+To: purchasing@halden-automation.example
+Subject: RE: RFQ solenoid valve SV-2210-24
+Date: Mon, 28 Sep 2026 09:14:02 +0100
+
+200 pcs SV-2210-24 @ 14.80 EUR each, 3 weeks, EXW our dock. Valid till 2026-10-30.
+
+Rgds
+Dave
+Acme Fluid Power Ltd

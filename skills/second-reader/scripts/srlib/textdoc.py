@@ -10,10 +10,11 @@ from email.parser import BytesParser
 from html.parser import HTMLParser
 from pathlib import Path
 
-TEXT_VERSION = "1"
+TEXT_VERSION = "2"
 TEXT_SUFFIXES = {".txt": "txt", ".md": "txt", ".eml": "eml", ".html": "html", ".htm": "html", ".pdf": "pdf"}
 MAX_CHARS = 2_000_000
 BLOCK_TAGS = {"p", "div", "tr", "li", "br", "h1", "h2", "h3", "h4", "h5", "h6", "table", "section", "blockquote"}
+HIDDEN_TAGS = {"title", "template"}      # never rendered in the message body
 VOID_TAGS = {"br", "img", "meta", "link", "input", "hr", "area", "base", "col", "embed", "source", "wbr"}
 HIDDEN_STYLE = re.compile(r"display\s*:\s*none|visibility\s*:\s*hidden|font-size\s*:\s*0(?:px|pt|em|%)?\s*(?:;|$)|"
                           r"opacity\s*:\s*0(?:\.0+)?\s*(?:;|$)|color\s*:\s*(?:#f{3}(?:f{3})?|white)\b", re.I)
@@ -32,8 +33,10 @@ class _Html(HTMLParser):
             self.parts.append("\n")
         if tag in VOID_TAGS:
             return
-        a = dict(attrs)
-        hidden = "hidden" in a or bool(HIDDEN_STYLE.search(a.get("style") or ""))
+        a = {}
+        for k, v in attrs:                                  # HTML: the FIRST occurrence of a repeated attribute wins
+            a.setdefault(k, v)
+        hidden = tag in HIDDEN_TAGS or "hidden" in a or bool(HIDDEN_STYLE.search(a.get("style") or ""))
         parent_hidden = bool(self.stack) and self.stack[-1][1]
         self.stack.append((tag, bool(hidden or parent_hidden)))
 
@@ -90,6 +93,19 @@ def _decode(raw):
     return raw.decode("latin-1")
 
 
+_NUM = re.compile(r"\d+(?:[.,']\d+)*")
+
+
+def _alternative_diff(plain, html_text):
+    """The plain-text and HTML alternatives of one email are two documents: extraction reads the plain one, most mail
+    programs show the HTML one. -> None when they agree on every number and the HTML has no instruction-like wording."""
+    p, h = set(_NUM.findall(plain)), set(_NUM.findall(html_text))
+    hits = sorted({label for label, _, _ in scan_text(html_text)})
+    if p == h and not hits:
+        return None
+    return {"html_only": sorted(h - p)[:20], "plain_only": sorted(p - h)[:20], "html_hits": hits}
+
+
 def _eml(raw):
     msg = BytesParser(policy=policy.default).parsebytes(raw)
     head = "".join(f"{h}: {str(msg[h]).strip()}\n" for h in ("From", "To", "Cc", "Subject", "Date") if msg[h])
@@ -113,15 +129,19 @@ def _eml(raw):
     if plain_part is not None:
         body = content(plain_part)
         kinds.append("plain")
+    alternative = None
     if html_part is not None:
         html_text, hidden = html_to_text(content(html_part))
         kinds.append("html")
         if plain_part is None:
             body = html_text
+        else:
+            alternative = _alternative_diff(body, html_text)
     attachments = [{"filename": p.get_filename(), "content_type": p.get_content_type(),
                     "bytes": len(p.get_payload(decode=True) or b"")} for p in msg.iter_attachments()]
     return head + "\n" + body, {"headers": {h: str(msg[h])[:200] for h in ("From", "To", "Subject", "Date") if msg[h]},
-                                "parts": kinds, "attachments": attachments}, hidden
+                                "parts": kinds, "attachments": attachments,
+                                **({"alternative": alternative} if alternative else {})}, hidden
 
 
 # ---- injection / manipulation scan (deterministic heuristics; a hit is a prompt for a human, not a verdict) ----
@@ -134,7 +154,7 @@ SCAN_PATTERNS = [
                      r"(?:note|message|instructions?|attention)\s+(?:to|for)\s+(?:the\s+)?(?:ai|llm|assistants?|"
                      r"automated|language models?))\b"),
     ("system_prompt", r"\b(?:system prompt|developer message|hidden instructions?)\b"),
-    ("fake_role_tag", r"(?:<\s*/?\s*(?:system|assistant|instructions?)\s*>|^\s*(?:system|assistant)\s*:)"),
+    ("fake_role_tag", r"(?:<(?:\s*/)?\s*(?:system|assistant|instructions?)\s*>|^\s*(?:system|assistant)\s*:)"),
     ("exfiltration", r"\b(?:reveal|print|output|send|forward|leak|exfiltrate|share|disclose|paste)\b[^.]{0,30}\b(?:"
                      r"(?:the|your|its|my|admin(?:'s)?)\s+(?:\w+\s+){0,1}(?:api[ -]?keys?|system prompt|credentials|private keys?)|"
                      r"(?:your|its|my|admin(?:'s)?)\s+(?:\w+\s+){0,2}(?:passwords?|secrets?|tokens?))\b"),
@@ -145,7 +165,9 @@ SCAN_PATTERNS = [
                 r"\b(?:user|human|operator|reviewer|buyer|anyone)\b"),
 ]
 _COMPILED = [(label, re.compile(rx, re.I | re.M)) for label, rx in SCAN_PATTERNS]
-_INVISIBLE = re.compile(r"[​-‏⁠⁦-⁩﻿]")
+# zero-width and format characters, bidi embeddings/overrides/isolates (display order != logical order), and the Unicode
+# "tag" block (invisible text that language models still read)
+_INVISIBLE = re.compile("[\u034f\u061c\u180e\u200b-\u200f\u202a-\u202e\u2060\u2066-\u2069\ufeff\U000e0000-\U000e007f]")
 
 
 def scan_text(text):

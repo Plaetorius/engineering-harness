@@ -1,16 +1,17 @@
 #!/usr/bin/env python3
 """S1 acceptance benchmark: run the real CLI on retail_clean.csv (false-positive baseline) and
-retail_planted.csv (known errors), then score recall. Needs fixtures (see fixtures/open/).
+retail_planted.csv (known errors), then score recall. Needs fixtures (see evals/second-reader/open/ at the repo root).
 Usage: python3 -I tests/bench_planted.py"""
 import json, sqlite3, subprocess, sys, tempfile, time
 from pathlib import Path
 
 root = Path(__file__).resolve().parent.parent
+open_data = root.parent.parent / "evals/second-reader/open"
 sr = str(root / "scripts" / "sr")
-derived = root / "fixtures/open/derived"
+derived = open_data / "derived"
 for need in ("retail_clean.csv", "retail_planted.csv", "planted_truth.json"):
     if not (derived / need).exists():
-        sys.exit(f"missing {derived / need}: run fixtures/open/fetch_fixtures.py then make_planted_retail.py")
+        sys.exit(f"missing {derived / need}: run evals/second-reader/open/fetch_fixtures.py then make_planted_retail.py")
 truth = json.loads((derived / "planted_truth.json").read_text())
 
 def run(csv_path):

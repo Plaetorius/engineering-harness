@@ -87,5 +87,5 @@ Re-run with `python3 -I tests/run_eval.py` (compares with `tests/baseline.json`,
 SKILL.md  README.md  scripts/{sr, sr-offline, sr.py, srlib/*}      srlib: ledger, ingest, checks, numparse, textdoc, pdfdoc, extract, localread, quotes, rfq, report, engine, brief
 tests/    test_*.py (unit/integration)  eval_*.py evalkit.py run_eval.py bench_*.py  baseline.json BASELINE.md
 tests/fixtures/{s2,s2_heldout,s2_sealed,s3,s4}    emails + recorded Haiku outputs + answer keys, PDFs (text layer, scanned clean/poor/unreadable)
-fixtures/open/    manifest.json fetch_fixtures.py make_planted_retail.py (downloads and derived data are git-ignored)
+(repo root) evals/second-reader/open/    manifest.json fetch_fixtures.py make_planted_retail.py; downloads and derived data are git-ignored and live outside the skill
 ```

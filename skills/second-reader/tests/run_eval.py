@@ -3,7 +3,7 @@
 
   python3 -I tests/run_eval.py            # run everything available, print a table, compare with tests/baseline.json
   python3 -I tests/run_eval.py --write    # (re)write tests/baseline.json and tests/BASELINE.md from this run
-  python3 -I tests/run_eval.py --full     # also run the real-data benchmarks (needs fixtures/open/data; ~3 min)
+  python3 -I tests/run_eval.py --full     # also run the real-data benchmarks (needs evals/second-reader/open/data; ~3 min)
 
 Exit status 1 if a metric drops more than TOLERANCE below the baseline or any unit test fails. The 'sealed' set is
 reported separately because it was written blind to the toolkit; see README for its history."""

@@ -119,7 +119,7 @@ def _scan_findings(led, run_id, doc_id, built):
         "exfiltration": "asks for secrets or credentials to be revealed or sent",
         "decision_steering": "tries to steer which quote/supplier is picked",
         "secrecy": "asks that the user / reviewer not be told",
-        "invisible_characters": "contains invisible zero-width characters",
+        "invisible_characters": "contains invisible or direction-changing characters",
     }
     live = set()
     for label, start, end in built["hits"]:
@@ -141,6 +141,19 @@ def _scan_findings(led, run_id, doc_id, built):
                            + ("The hidden text itself contains instruction-like wording." if hostile else
                               "It reads like ordinary hidden markup (e.g. a preheader), but it was excluded from the text."),
                            [rec], count=len(built["hidden_text"]))
+    alt = built["meta"].get("alternative")
+    if alt:
+        rec = led.upsert_record(doc_id, "alt_text", "alt:html", ("HTML only: " + ", ".join(alt["html_only"]) + "; plain only: "
+                                + ", ".join(alt["plain_only"]))[:200], "sr.scan", verified=True, verify_note="alt_differs")
+        live.add("alt_differs")
+        hostile = bool(alt["html_hits"])
+        led.upsert_finding(run_id, doc_id, "inject.alt_differs", textdoc.TEXT_VERSION, "alt_differs",
+                           "high" if hostile else "medium", "medium", "concern",
+                           "The plain-text and HTML versions of this email disagree (numbers only in the HTML: "
+                           f"{', '.join(alt['html_only']) or 'none'}; only in the plain text: {', '.join(alt['plain_only']) or 'none'}). "
+                           "Values were read from the plain text only; most mail programs show the HTML version. "
+                           + ("The HTML version also contains instruction-like wording. " if hostile else "")
+                           + "Compare both versions by eye before trusting any value.", [rec])
     for pg in (built.get("pdf") or {}).get("pages", []):
         if pg["method"] == "ocr_unreadable":
             rec = led.upsert_record(doc_id, "ocr_page", f"page:{pg['page']}", f"mean OCR confidence {pg['mean_conf']}%",
@@ -151,7 +164,7 @@ def _scan_findings(led, run_id, doc_id, built):
                                f"{pg['mean_conf']}%); it was left out. Nothing on it has been checked: read it by eye or "
                                f"rescan it.", [rec])
     for row in led.db.execute("SELECT finding_id, check_id, dedupe_key FROM findings WHERE doc_id=? AND "
-                              "check_id IN ('inject.suspicious_text','inject.hidden_text','ocr.unreadable_page') AND status='open'",
+                              "check_id IN ('inject.suspicious_text','inject.hidden_text','inject.alt_differs','ocr.unreadable_page') AND status='open'",
                               (doc_id,)).fetchall():
         if row["dedupe_key"] not in live:
             led.db.execute("DELETE FROM findings WHERE finding_id=?", (row["finding_id"],))

@@ -9,6 +9,7 @@ sys.path.insert(0, str(ROOT / "scripts")); sys.path.insert(0, str(ROOT / "tests"
 from srlib import brief, engine, extract, localread, pdfdoc, quotes, report, rfq   # noqa: E402
 from srlib.ledger import Ledger, LedgerError, SCHEMA_PATH, _split_sql              # noqa: E402
 import eval_heldout, eval_s2                                                       # noqa: E402
+from timebox import timebox                                                        # noqa: E402
 
 FX2, FX3, FX4 = ROOT / "tests/fixtures/s2", ROOT / "tests/fixtures/s3", ROOT / "tests/fixtures/s4"
 HAVE_PDF = all(pdfdoc.tools_available().values())
@@ -118,6 +119,39 @@ class LocalReaderTests(unittest.TestCase):
         s = eval_heldout.run("sealed", "haiku", False)["haiku"]
         self.assertGreaterEqual(h["passed"] / h["total"], 0.85)
         self.assertGreaterEqual(s["passed"] / s["total"], 0.77)
+
+
+class LocalReaderHostileInputTests(unittest.TestCase):
+    """The document is attacker-controlled: no single line may make the rule-based reader super-linear (it ran for minutes on
+    ~20 KB before). Limits are generous (the fixed reader needs well under 0.5 s) but far below the old behaviour."""
+    N = 40_000
+
+    def test_long_runs_and_gaps_are_read_in_linear_time(self):
+        n = self.N
+        hostile = {
+            "digit run": "Price: " + "1" * n,
+            "comma run": "Price: " + "1," * (n // 2),
+            "lead time digit run": "Lead time: " + "1" * n,
+            "capitals (letterhead)": "A" * n,
+            "price-break line, wide gap": "1-2" + " " * n + "x",
+            "price-break line, wide gap after unit": "1-2 pcs 5" + " " * n + "x",
+            "table row, wide gap": "1 P" + " " * n + "x",
+            "quantity phrase on a comma run": "1," * (n // 2) + " of the A-1",
+        }
+        for name, line in hostile.items():
+            with self.subTest(name), timebox(5):
+                localread.read("Subject: Quote\n\n" + line + "\n", 10)
+
+    def test_overlong_number_is_absent_not_truncated(self):
+        r = localread.read("Offer: SV-2210-24, EUR " + "9" * 40 + " each.\n", 10)
+        self.assertEqual([f for f in r["facts"] if f["field"] == "unit_price"], [])
+
+    def test_ordinary_amounts_and_names_still_read(self):
+        r = localread.read("Alpine Metals GmbH\n\nOffer: SV-2210-24, EUR 1'234.50 each, 3 weeks.\n", 10)
+        f = {(x["entity"], x["field"]): x["value"] for x in r["facts"]}
+        self.assertEqual(f[("L1", "unit_price")], "1'234.50")
+        self.assertEqual(f[("doc", "supplier_name")], "Alpine Metals GmbH")
+        self.assertEqual(f[("doc", "lead_time")], "3 weeks")
 
 
 class BatchTests(Base):

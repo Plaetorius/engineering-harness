@@ -13,14 +13,14 @@ Without it, price-break tables are noted and skipped rather than guessed.
 import re
 
 CCY = r"(?:EUR|USD|GBP|CHF|CZK|SEK|NOK|DKK|PLN|€|\$|£|euros?|dollars?|sterling|pounds?)"
-AMOUNT = r"(?:\d[\d.,']*\d|\d)"
+AMOUNT = r"(?<!\d)(?:\d[\d.,']{0,30}\d|\d)(?!\d)"      # bounded and anchored to the whole digit run: linear time on hostile input
 PRICE_RX = re.compile(rf"(?:(?P<c1>{CCY})\s?(?P<a1>{AMOUNT})|(?P<a2>{AMOUNT})\s?(?P<c2>{CCY}\b|{CCY}(?![A-Za-z])))", re.I)
 PART_RX = re.compile(r"\b([A-Za-z]{1,5}-?\d{2,6}(?:-[0-9A-Za-z]{1,4})*[A-Za-z]?)\b")
 PART_STOP = {"PO", "RFQ", "INV", "NO", "REF", "Q", "ISO", "EN", "DIN", "RAL", "IP", "DWG", "VAT", "NET", "IEC", "UL", "CE",
              "KW", "HRB", "TEL", "FAX", "PLZ", "ABN", "UST", "ID", "G", "M", "NPT", "BSPP", "PN"}
 FREIGHT_KW = re.compile(r"\b(freight|shipping|carriage|courier|handling|delivered|fracht\w*|versand\w*|lieferung frei|frei haus|porto)\b", re.I)
 INCOTERM_RX = re.compile(r"\b(EXW|FCA|FAS|FOB|CFR|CIF|CPT|CIP|DAP|DPU|DDP)\b")
-LEAD_RX = re.compile(r"(\d+(?:\s*[-–]\s*\d+)?\s*(?:working days?|business days?|werktage?n?|days?|tage?n?|weeks?|wks?|wochen?|months?|monate?n?))\b", re.I)
+LEAD_RX = re.compile(r"((?<!\d)\d+(?:\s*[-–]\s*\d+)?\s*(?:working days?|business days?|werktage?n?|days?|tage?n?|weeks?|wks?|wochen?|months?|monate?n?))\b", re.I)
 LEAD_CTX = re.compile(r"\b(lead time|lead-time|delivery|deliver|ship|ships|shipping|arrive|come in|ready|ex[- ]?stock|lieferzeit|lieferung|aro|"
                       r"after receipt|production|délai|delai)\b", re.I)
 NOT_LEAD_CTX = re.compile(r"\b(valid|validity|good until|payment|net ?\d*|open for|due|within \d+ days of invoice|prepay|gültig|zahlung)\b", re.I)
@@ -34,20 +34,20 @@ PAYMENT_RX = re.compile(r"\bpayment\b[:\s—.\-]*([^\n]+)", re.I)
 MOQ_RX = re.compile(r"(?:minimum order(?: quantity)?|MOQ|min\.? order)\D{0,12}(\d[\d.,]*)", re.I)
 QTY_RXS = [re.compile(p, re.I) for p in (
     r"\b(?:qty|quantity|menge)\s*[:=]?\s*(\d[\d.,]*)\b",
-    r"\b(\d[\d.,]*)\s+of\s+the\s+(?=[A-Z]{1,5}-?\d)",
+    r"(?<![\d.,])\b(\d[\d.,]*)\s+of\s+the\s+(?=[A-Z]{1,5}-?\d)",
     r"(?<![\d.,-])(\d[\d.,]*)\s*[- ]?(?:pcs|pieces?|units?|stk|stück)\b")]
 BASIS_RX = re.compile(r"(per\s+\d[\d.,]*\s*(?:pcs|pieces|units|pc)?|pro\s+\d[\d.,]*\s*(?:stück|stk)|per\s+(?:piece|pc|pcs|unit|item)|"
                       r"pro stück|each\b|/\s*(?:pc|pcs|ea|piece|unit)\b|a piece|apiece)", re.I)
 TIER_RX = re.compile(r"\b(only from|from \d+\s*(?:pcs|pieces|units)|ab \d+\s*(?:stk|stück)|price list|list price)\b", re.I)
 LEGAL = (r"(?i:GmbH|AG|KG|e\.?K\.?|Ltd\.?|Limited|PLC|Inc\.?|LLC|Corp\.?|S\.?R\.?L\.?|SpA|S\.?A\.?|SARL|SAS|B\.?V\.?|NV|"
          r"s\.r\.o\.|AB|Co\.?,? ?Ltd\.?|Co\.?)")
-SUPPLIER_RX = re.compile(rf"([A-ZÄÖÜ][\w&.\-]*(?:\s+[A-ZÄÖÜ&][\w&.\-]*){{0,5}},?\s+{LEGAL})(?=\s|$|[,.;])")
+SUPPLIER_RX = re.compile(rf"(?<![\w&.\-])([A-ZÄÖÜ][\w&.\-]*(?:\s+[A-ZÄÖÜ&][\w&.\-]*){{0,5}},?\s+{LEGAL})(?=\s|$|[,.;])")
 SIGNOFF = re.compile(r"^(best|kind|many|warm)?\s*(regards|wishes|thanks|thank you|cheers|sincerely|mfg|grüße|gruss)\b", re.I)
-ROW_RX = re.compile(rf"^\s*\d{{1,3}}\s+(?P<part>\S+)\s+.*?\s(?P<qty>\d[\d.,]*)\s+(?P<c>{CCY})\s?(?P<price>{AMOUNT})\s+{CCY}\s?{AMOUNT}", re.I)
+ROW_RX = re.compile(rf"^\s*\d{{1,3}}\s+(?P<part>\S+)\s+(?:\S.*?)?\s(?P<qty>\d[\d.,]*)\s+(?P<c>{CCY})\s?(?P<price>{AMOUNT})\s+{CCY}\s?{AMOUNT}", re.I)
 LAYOUT_GAPS = re.compile(r"\S {3,}\S.* {3,}\S")
 CTX_CCY = re.compile(rf"\b(?:in|prices?\s+in|pricing\s+in)\s+(?P<c>{CCY})\b|\((?P<c2>{CCY})\)", re.I)
-TIER_LINE = re.compile(rf"^\s*(?P<lo>\d[\d.,]*)\s*(?:(?:[-–]|to)\s*(?P<hi>\d[\d.,]*)|(?P<plus>\+))\s*(?:pcs|pieces|stk|units)?\s+"
-                       rf"(?P<c1>{CCY})?\s?(?P<amt>{AMOUNT})\s*(?P<c2>{CCY})?\s*$", re.I)
+TIER_LINE = re.compile(rf"^\s*(?P<lo>\d[\d.,]*)\s*(?:(?:[-–]|to)\s*(?P<hi>\d[\d.,]*)|(?P<plus>\+))(?:\s*(?:pcs|pieces|stk|units))?\s+"
+                       rf"(?P<c1>{CCY})?\s?(?P<amt>{AMOUNT})(?:\s*(?P<c2>{CCY}))?\s*$", re.I)
 RANGE_CELL = re.compile(r"^\s*(?P<lo>\d[\d.,]*)\s*(?:(?:[-–]|to|bis)\s*(?P<hi>\d[\d.,]*)|(?P<plus>\+))\s*$", re.I)
 
 

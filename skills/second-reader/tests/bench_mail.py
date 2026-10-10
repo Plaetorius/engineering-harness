@@ -1,18 +1,19 @@
 #!/usr/bin/env python3
 """Real-email robustness + injection-scan false-positive benchmark on the SpamAssassin public corpus (offline parse).
-Needs fixtures: python3 -I fixtures/open/fetch_fixtures.py spamassassin_public_corpus
+Needs fixtures: python3 -I ../../evals/second-reader/open/fetch_fixtures.py spamassassin_public_corpus
 Usage: python3 -I tests/bench_mail.py"""
 import sys, time, traceback
 from collections import Counter
 from pathlib import Path
 
 root = Path(__file__).resolve().parent.parent
+open_data = root.parent.parent / "evals/second-reader/open"
 sys.path.insert(0, str(root / "scripts"))
 from srlib import textdoc  # noqa: E402
 
-base = root / "fixtures/open/data/spamassassin_public_corpus"
+base = open_data / "data/spamassassin_public_corpus"
 if not base.exists():
-    sys.exit("missing fixtures: python3 -I fixtures/open/fetch_fixtures.py spamassassin_public_corpus")
+    sys.exit("missing fixtures: python3 -I ../../evals/second-reader/open/fetch_fixtures.py spamassassin_public_corpus")
 
 fail = False
 for group in ("easy_ham", "hard_ham", "spam"):

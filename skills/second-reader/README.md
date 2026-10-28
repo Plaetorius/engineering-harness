@@ -5,7 +5,7 @@ short list of things worth a second look, each with its evidence: values copied 
 quotes compared against an RFQ and a bid price. Findings are rule hits, not verdicts; the human decides.
 
 Two skills share one toolkit (`scripts/sr`):
-- `second-reader` (`SKILL.md`): orchestration protocol for Claude Code. Free code first, Haiku doers only for gaps (batched), Opus only for a compact list of conflicts.
+- `second-reader` (`SKILL.md`): orchestration protocol for Claude Code. Free code first, Haiku doers only for gaps (batched), conflicts adjudicated by the organizer (an Opus advisor only when the organizer runs on a smaller model).
 - `second-reader-offline` (`../second-reader-offline/SKILL.md`): no AI, no network. A human runs `scripts/sr-offline` and gets a self-contained HTML report. The assistant is told to stay out of the data, because an assistant that reads the documents or the output has already received them.
 
 **Activating the skills.** The harness installer links a fixed list of six skills and has its own tests, so these two are not linked

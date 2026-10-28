@@ -27,6 +27,7 @@ Prefer **code graders** (exact comparison against an answer key, constraint chec
 - One command runs everything cheap and deterministic; slow or expensive evaluations are opt-in and say so.
 - A **baseline file** records the last accepted numbers; a run fails when a metric falls more than a stated tolerance below it. Update the baseline deliberately, with the reason, never to make a run pass.
 - Keep evaluations fast enough that they are actually run, and version them with the code they measure.
+- **Comparing variants** (a prompt, a model, a delegated step against the same work in the main loop): change one thing at a time; before the change, make sure there is a case for every path that runs as a chain in practice and for every rule that must not break; run each case more than once; and report which cases flipped in each direction, not only the aggregate, since a lower cost or latency can hide a broken step.
 - For sliced work, evaluation results are evidence for the gates in [Vertical Slice Delivery](../../standards/vertical-slice-delivery.md) (local results do not establish integration), and the measurement rules sit with the [verification standard](../../standards/testing.md).
 - Mandatory failures block acceptance. Do not widen a tolerance or drop a case to turn a run green; if a case is wrong, fix the key and say why.
 

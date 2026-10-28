@@ -19,10 +19,10 @@ Toolkit: `scripts/sr` in this skill's directory (resolve the symlink first); `sc
 |---|---|---|
 | **Code** (free) | ingest, profile, OCR, rule-based read (`sr extract local`), all checks, RFQ comparison, reports | |
 | **Haiku doers** | read documents the rules could not, in **batches**, into the fact schema | judge, compare, compute |
-| **Sonnet (you, the organizer)** | route files, run the toolkit, batch doers, merge, keep the human informed | read raw documents when code already did |
-| **Opus advisor** | adjudicate a short list of open conflicts you hand it | read raw documents or the whole ledger |
+| **You, the organizer** (main session, any model) | route files, run the toolkit, batch doers, merge, adjudicate conflicts, keep the human informed | read raw documents when code already did |
+| **Opus advisor** (only if you run on a smaller model) | adjudicate a short list of open conflicts you hand it | read raw documents or the whole ledger |
 
-A tier escalates only with a stated reason (gap, disagreement, low confidence), never by default.
+A tier escalates only with a stated reason (gap, disagreement, low confidence), never by default. Doers are separate agents because their batches run in parallel, return a fixed schema and keep bulky untrusted document text out of your context; the advisor is not a separate agent when you already run on the deepest model.
 
 ## Workflow
 1. **Set up.** `sr run start --goal "<what the human is doing>"`. If an RFQ is known, enter it *first* (`sr rfq set/add/load`, FX as units per 1 base currency): doers then receive the buyer's request, which selects the right price tier and part number.
@@ -31,7 +31,7 @@ A tier escalates only with a stated reason (gap, disagreement, low confidence), 
 4. **Escalate only the gaps.** A document needs a doer if the local read found no priced line, no part number, or lacks unit price, quantity, currency or lead time, or is not English/German. Then `sr batch prepare DOC... --out-dir D` and, per batch file, delegate to a Haiku subagent with this brief: *read only this file, follow its `instructions` exactly, write the JSON answer to the given path with one entry per document, reply "done"*. Commit with `sr batch commit --ids <doc ids> --input <answer>`. A doer may return a partial or malformed answer: the commit reports per-document errors; re-run `sr batch prepare` (finished documents are cached and skipped) and re-delegate only the missing ones. Observed cost: about a quarter of the tokens per document versus one call per document.
 5. **Second read, free.** `sr extract compare DOC --a A --b L` aligns the model read with the rule-based read. Disagreements and "only one reader found it" become findings. Spend a second model pass (`--pass B`) only on documents where a money field is still contested.
 6. **Quote cross-checks.** `sr qcheck` per document, then `sr rfq compare` (part/substitute, quantity, lead time, validity, FX, freight, landed cost, ranking, margin against the bid). The cheapest quote is never silently the best: read the reason it was passed over.
-7. **Advisor (only if needed).** Build a compact list: open high findings, disagreements, conflicting fields, each with its claim and locator. Give Opus that list plus the buyer's question, not documents. Ask which items most need a person and what to ask the supplier. Its answer is advice for the human, not a ledger fact.
+7. **Adjudicate (only if needed).** Build a compact list: open high findings, disagreements, conflicting fields, each with its claim and locator. If you run on the deepest model, work through it yourself; otherwise give Opus that list plus the buyer's question, not documents. Ask which items most need a person and what to ask the supplier. Its answer is advice for the human, not a ledger fact.
 8. **Brief the human.** `sr brief` (terminal) or `sr report --out report.html [--embed-pages]`. Lead with defects and the recommended quote, then concerns, then *Not checked*. Offer to drill into any item: `sr drill F`, `sr page DOC N` (see the scanned page), then record their decisions: `sr confirm F`, `sr dismiss F --label noise`, `sr feedback F --label useful|noise|already-known`. These labels are the evaluation data.
 
 ## Steering

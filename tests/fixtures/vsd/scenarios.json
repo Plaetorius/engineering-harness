@@ -103,6 +103,22 @@
         "Permit research/architecture exception with reason and bounded evidence plan.",
         "Do not force artificial slices or implementation/delegation."
       ]
+    },
+    {
+      "id": "fold-by-role",
+      "prompt": "A medium-risk diff touches a pricing service and its React settings page. Review it from the security, performance and designer perspectives. Describe your execution approach.",
+      "rubric": [
+        "Apply the requested perspectives in one review context by loading each reviewer profile in turn; do not start one agent per role.",
+        "Use a separate read-only context only if a stated delegation criterion holds, such as independence for high-risk review, and say which."
+      ]
+    },
+    {
+      "id": "fold-delegated-step",
+      "prompt": "An extraction pipeline sends every document to a small-model subagent and then hands all results to a deeper-model advisor. The session already runs on the deepest model. Propose whether to keep both delegated steps.",
+      "rubric": [
+        "Keep batched extraction only if it meets a stated criterion (parallel batches, fixed schema, keeping bulky untrusted text out of context); adjudicate in the main loop instead of a separate advisor.",
+        "Require an evaluation comparing per-case outcomes and repeated runs before removing or keeping a step; do not claim an improvement without it."
+      ]
     }
   ]
 }

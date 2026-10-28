@@ -37,7 +37,17 @@ Never mark Accepted when mandatory checks failed, could not run, or were skipped
 
 ## Delegate through native capabilities
 
-Use the runtime's existing delegation facilities when useful and permitted; if they are unavailable, proceed sequentially or report the limitation. Do not change permissions, models or runtime configuration merely to enable delegation. The primary agent remains accountable for coordination and truthful status reporting.
+Default to one agent in one context: it writes the plan, carries it out, sees every raw result and revises the plan as evidence arrives. Specialist knowledge reaches that loop as skills, standards and reviewer profiles loaded on demand, not as separate agents. Each handoff returns a summary that loses detail, costs a nested model loop and splits voice and rules across prompts.
+
+Delegate only when at least one of these holds, and state which:
+- **Parallel, separable work** that needs little from the rest of the task and returns a compact result, such as independent research paths, components behind a stable contract, or batched extraction into a fixed schema. The delegate's context can be discarded afterwards.
+- **Measured context pressure**: the main loop has degraded, or demonstrably would, from the volume of material, for example raw documents or long logs that only need distilling.
+- **Independence**: verification or review that must not be anchored on the implementer's reasoning, or a black-box check against the original requirements.
+- **Isolation**: untrusted bulky input or a narrower permission scope that should not enter the main context.
+
+Divide by context, never by role, domain or problem type: one agent per reviewer perspective or per team turns into a telephone game. Keep steps that chain on each other's output, touch the same data or usually run together in one context. Ask delegates for an agreed, compact return shape and verify their load-bearing claims against the source before relying on them. When the evidence for delegating is unclear, keep the work in the main loop.
+
+Use the runtime's existing delegation facilities when these criteria apply and delegation is permitted; if they are unavailable, proceed sequentially or report the limitation. Do not change permissions, models or runtime configuration merely to enable delegation. The primary agent remains accountable for coordination and truthful status reporting.
 
 Every delegated implementation assignment includes:
 
@@ -55,7 +65,7 @@ Use one accountable coordinator to integrate authorized changes and run combined
 
 Escalate when dependencies are unavailable, a shared contract must change, ownership conflicts arise, criteria are ambiguous, invariant correctness cannot be established, significant out-of-scope work is needed, or repeated failures yield no new diagnostic evidence. Reassess with the debugging workflow rather than making endless speculative fixes. A blocked slice stays blocked until its resume condition is satisfied; other ready work may proceed safely.
 
-Model tiers are optional guidance, not a mandate, and never authorise changing models or runtime configuration. When several tiers are available and delegation is permitted, route by task rather than habit: bounded, verifiable work (extraction into a schema, search, mechanical checks) to the cheapest sufficient tier, batched where possible, with deterministic code doing arithmetic and comparison; orchestration to a middle tier; the deepest tier only to adjudicate a short explicit list of open conflicts, not to read raw material. A tier escalates only with a stated reason (a gap, a disagreement, low confidence), and delegated output is verified against its source before it is relied on.
+Model tiers are optional guidance, not a mandate, and never authorise changing models or runtime configuration. When several tiers are available and delegation is permitted, route by task rather than habit: bounded, verifiable work (extraction into a schema, search, mechanical checks) that meets the criteria above may go to the cheapest sufficient tier, batched where possible, with deterministic code doing arithmetic and comparison. Planning, orchestration and judgment stay in the main loop on whatever model runs it; do not add a separate orchestrator layer. Hand a short explicit list of open conflicts to a deeper tier only when the main loop runs on a smaller one, and never raw material. A tier escalates only with a stated reason (a gap, a disagreement, low confidence), and delegated output is verified against its source before it is relied on. Keep a delegated step only while it measurably beats doing the same work in the main loop.
 
 ## Verification and packs
 
